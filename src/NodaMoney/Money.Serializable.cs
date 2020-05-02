@@ -54,7 +54,7 @@ namespace NodaMoney
                 currency = info.GetString("currency");
             }
 
-            Currency = (Currency)TypeDescriptor.GetConverter(typeof(Currency)).ConvertFromString(currency);
+            Currency = (CurrencyInfo)TypeDescriptor.GetConverter(typeof(CurrencyInfo)).ConvertFromString(currency);
             Amount = Round(amount, Currency, MidpointRounding.ToEven);
         }
 #pragma warning restore CA1801 // Parameter context of method.ctor is never used.
@@ -81,7 +81,7 @@ namespace NodaMoney
                 throw new SerializationException("Couldn't find content element with name Money!");
 
             var amount = decimal.Parse(reader["Amount"], CultureInfo.InvariantCulture);
-            var currency = (Currency)TypeDescriptor.GetConverter(typeof(Currency)).ConvertFromString(reader["Currency"]);
+            var currency = (CurrencyInfo)TypeDescriptor.GetConverter(typeof(CurrencyInfo)).ConvertFromString(reader["Currency"]);
 
             Unsafe.AsRef(this) = new Money(amount, currency);
         }
@@ -95,7 +95,7 @@ namespace NodaMoney
                 throw new ArgumentNullException(nameof(writer));
 
             writer.WriteAttributeString("Amount", Amount.ToString(CultureInfo.InvariantCulture));
-            writer.WriteAttributeString("Currency", TypeDescriptor.GetConverter(typeof(Currency)).ConvertToString(Currency));
+            writer.WriteAttributeString("Currency", TypeDescriptor.GetConverter(typeof(CurrencyInfo)).ConvertToString(Currency));
         }
 
         /// <summary>Populates a <see cref="SerializationInfo" /> with the data needed to serialize the target object.</summary>
@@ -108,7 +108,7 @@ namespace NodaMoney
                 throw new ArgumentNullException(nameof(info));
 
             info.AddValue("Amount", Amount);
-            info.AddValue("Currency", TypeDescriptor.GetConverter(typeof(Currency)).ConvertToString(Currency));
+            info.AddValue("Currency", TypeDescriptor.GetConverter(typeof(CurrencyInfo)).ConvertToString(Currency));
         }
     }
 }

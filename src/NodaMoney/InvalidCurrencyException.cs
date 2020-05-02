@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 
 namespace NodaMoney
 {
-    /// <summary>The exception that is thrown when the <see cref="Currency"/> is invalid for the current context or object state.</summary>
+    /// <summary>The exception that is thrown when the <see cref="CurrencyInfo"/> is invalid for the current context or object state.</summary>
     [ComVisible(true)]
     [Serializable]
     public class InvalidCurrencyException : InvalidOperationException
@@ -35,7 +35,7 @@ namespace NodaMoney
         /// <summary>Initializes a new instance of the <see cref="InvalidCurrencyException"/> class.</summary>
         /// <param name="expected">The expected currency.</param>
         /// <param name="actual">The actual currency.</param>
-        public InvalidCurrencyException(Currency expected, Currency actual)
+        public InvalidCurrencyException(CurrencyInfo expected, CurrencyInfo actual)
             : this($"The requested operation expected the currency {expected.Code}, but the actual value was the currency {actual.Code}!")
         {
         }

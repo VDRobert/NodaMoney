@@ -98,7 +98,7 @@ namespace NodaMoney.Tests.MoneyConvertibleSpec
     [Collection(nameof(NoParallelization))]
     public class GivenIWantToCastNumericTypeToMoneyWithImplicitCurrencyFromTheCurrentCulture
     {
-        private readonly Currency _euro = Currency.FromCode("EUR");
+        private readonly CurrencyInfo _euro = CurrencyInfo.FromCode("EUR");
 
         [Fact]
         [UseCulture("nl-NL")]

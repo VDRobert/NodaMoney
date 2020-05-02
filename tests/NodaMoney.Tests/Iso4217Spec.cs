@@ -65,7 +65,7 @@ namespace NodaMoney.Tests.Iso4127Spec
         public void WhenCurrenciesInIso4127List_ThenShouldAlsoExistInNodaMoney()
         {
             var missingCurrencies = _iso4127List.currencies
-                                        .Where(a => !Currency.GetAllCurrencies().Any(c => c.Code == a.Currency))
+                                        .Where(a => !CurrencyInfo.GetAllCurrencies().Any(c => c.Code == a.Currency))
                                         .ToList();
 
             missingCurrencies.Should().HaveCount(0, $"expected defined currencies to contain {string.Join(", ", missingCurrencies.Select(a => a.Currency + " " + a.CurrencyName))}");
@@ -75,7 +75,7 @@ namespace NodaMoney.Tests.Iso4127Spec
         public void WhenCurrenciesInRegistryAndCurrent_ThenTheyShouldAlsoBeDefinedInTheIsoList()
         {
             var notDefinedCurrencies =
-                Currency.GetAllCurrencies()
+                CurrencyInfo.GetAllCurrencies()
                 .Where(c => c.IsValidOn(_iso4127List.PublishDate))
                 .Where(c => !string.IsNullOrEmpty(c.NumericCode))
                 .Where(c => !_iso4127List.currencies.Any(a => a.Currency == c.Code))
@@ -89,7 +89,7 @@ namespace NodaMoney.Tests.Iso4127Spec
         {
             var differences = new List<string>();
 
-            foreach (var nodaCurrency in Currency.GetAllCurrencies())
+            foreach (var nodaCurrency in CurrencyInfo.GetAllCurrencies())
             {
                 var iso4127Currency = _iso4127List.currencies.FirstOrDefault(x => x.Currency == nodaCurrency.Code);
                 
@@ -110,7 +110,7 @@ namespace NodaMoney.Tests.Iso4127Spec
         {
             var differences = new List<string>();
 
-            foreach (var nodaCurrency in Currency.GetAllCurrencies())
+            foreach (var nodaCurrency in CurrencyInfo.GetAllCurrencies())
             {
                 var iso4127Currency = _iso4127List.currencies.FirstOrDefault(x => x.Currency == nodaCurrency.Code);
                 
@@ -131,7 +131,7 @@ namespace NodaMoney.Tests.Iso4127Spec
         {
             var differences = new List<string>();
 
-            foreach (var nodaCurrency in Currency.GetAllCurrencies())
+            foreach (var nodaCurrency in CurrencyInfo.GetAllCurrencies())
             {
                 var iso4127Currency = _iso4127List.currencies.FirstOrDefault(x => x.Currency == nodaCurrency.Code);
 

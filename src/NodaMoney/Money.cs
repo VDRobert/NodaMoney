@@ -17,12 +17,12 @@ namespace NodaMoney
         /// <summary>Initializes a new instance of the <see cref="Money"/> struct, based on the current culture.</summary>
         /// <param name="amount">The Amount of money as <see langword="decimal"/>.</param>
         /// <remarks>The amount will be rounded to the number of decimal digits of the specified currency
-        /// (<see cref="NodaMoney.Currency.DecimalDigits"/>). As rounding mode, MidpointRounding.ToEven is used
+        /// (<see cref="NodaMoney.CurrencyInfo.DecimalDigits"/>). As rounding mode, MidpointRounding.ToEven is used
         /// (<see cref="System.MidpointRounding"/>). The behavior of this method follows IEEE Standard 754, section 4. This
         /// kind of rounding is sometimes called rounding to nearest, or banker's rounding. It minimizes rounding errors that
         /// result from consistently rounding a midpoint value in a single direction.</remarks>
         public Money(decimal amount)
-            : this(amount, Currency.CurrentCurrency)
+            : this(amount, CurrencyInfo.CurrentCurrency)
         {
         }
 
@@ -30,12 +30,12 @@ namespace NodaMoney
         /// <param name="amount">The Amount of money as <see langword="decimal"/>.</param>
         /// <param name="code">A ISO 4217 Currency code, like EUR or USD.</param>
         /// <remarks>The amount will be rounded to the number of decimal digits of the specified currency
-        /// (<see cref="NodaMoney.Currency.DecimalDigits"/>). As rounding mode, MidpointRounding.ToEven is used
+        /// (<see cref="NodaMoney.CurrencyInfo.DecimalDigits"/>). As rounding mode, MidpointRounding.ToEven is used
         /// (<see cref="System.MidpointRounding"/>). The behavior of this method follows IEEE Standard 754, section 4. This
         /// kind of rounding is sometimes called rounding to nearest, or banker's rounding. It minimizes rounding errors that
         /// result from consistently rounding a midpoint value in a single direction.</remarks>
         public Money(decimal amount, string code)
-            : this(amount, Currency.FromCode(code))
+            : this(amount, CurrencyInfo.FromCode(code))
         {
         }
 
@@ -43,9 +43,9 @@ namespace NodaMoney
         /// <param name="amount">The Amount of money as <see langword="decimal"/>.</param>
         /// <param name="rounding">The rounding mode.</param>
         /// <remarks>The amount will be rounded to the number of decimal digits of the specified currency
-        /// (<see cref="NodaMoney.Currency.DecimalDigits"/>).</remarks>
+        /// (<see cref="NodaMoney.CurrencyInfo.DecimalDigits"/>).</remarks>
         public Money(decimal amount, MidpointRounding rounding)
-            : this(amount, Currency.CurrentCurrency, rounding)
+            : this(amount, CurrencyInfo.CurrentCurrency, rounding)
         {
         }
 
@@ -53,11 +53,11 @@ namespace NodaMoney
         /// <param name="amount">The Amount of money as <see langword="decimal"/>.</param>
         /// <param name="currency">The Currency of the money.</param>
         /// <remarks>The amount will be rounded to the number of decimal digits of the specified currency
-        /// (<see cref="NodaMoney.Currency.DecimalDigits"/>). As rounding mode, MidpointRounding.ToEven is used
+        /// (<see cref="NodaMoney.CurrencyInfo.DecimalDigits"/>). As rounding mode, MidpointRounding.ToEven is used
         /// (<see cref="System.MidpointRounding"/>). The behavior of this method follows IEEE Standard 754, section 4. This
         /// kind of rounding is sometimes called rounding to nearest, or banker's rounding. It minimizes rounding errors that
         /// result from consistently rounding a midpoint value in a single direction.</remarks>
-        public Money(decimal amount, Currency currency)
+        public Money(decimal amount, CurrencyInfo currency)
             : this(amount, currency, MidpointRounding.ToEven)
         {
         }
@@ -67,9 +67,9 @@ namespace NodaMoney
         /// <param name="code">A ISO 4217 Currency code, like EUR or USD.</param>
         /// <param name="rounding">The rounding mode.</param>
         /// <remarks>The amount will be rounded to the number of decimal digits of the specified currency
-        /// (<see cref="NodaMoney.Currency.DecimalDigits"/>).</remarks>
+        /// (<see cref="NodaMoney.CurrencyInfo.DecimalDigits"/>).</remarks>
         public Money(decimal amount, string code, MidpointRounding rounding)
-            : this(amount, Currency.FromCode(code), rounding)
+            : this(amount, CurrencyInfo.FromCode(code), rounding)
         {
         }
 
@@ -78,8 +78,8 @@ namespace NodaMoney
         /// <param name="currency">The Currency of the money.</param>
         /// <param name="rounding">The rounding mode.</param>
         /// <remarks>The amount will be rounded to the number of decimal digits of the specified currency
-        /// (<see cref="NodaMoney.Currency.DecimalDigits"/>).</remarks>
-        public Money(decimal amount, Currency currency, MidpointRounding rounding)
+        /// (<see cref="NodaMoney.CurrencyInfo.DecimalDigits"/>).</remarks>
+        public Money(decimal amount, CurrencyInfo currency, MidpointRounding rounding)
             : this()
         {
             this.Currency = currency;
@@ -94,7 +94,7 @@ namespace NodaMoney
         /// <remarks>This constructor will first convert to decimal by rounding the value to 15 significant digits using rounding
         /// to nearest. This is done even if the number has more than 15 digits and the less significant digits are zero.
         /// <para>The amount will be rounded to the number of decimal digits of the specified currency
-        /// (<see cref="NodaMoney.Currency.DecimalDigits"/>). As rounding mode, MidpointRounding.ToEven is used
+        /// (<see cref="NodaMoney.CurrencyInfo.DecimalDigits"/>). As rounding mode, MidpointRounding.ToEven is used
         /// (<see cref="System.MidpointRounding"/>). The behavior of this method follows IEEE Standard 754, section 4. This
         /// kind of rounding is sometimes called rounding to nearest, or banker's rounding. It minimizes rounding errors that
         /// result from consistently rounding a midpoint value in a single direction.</para></remarks>
@@ -110,12 +110,12 @@ namespace NodaMoney
         /// <remarks>This constructor will first convert to decimal by rounding the value to 15 significant digits using rounding
         /// to nearest. This is done even if the number has more than 15 digits and the less significant digits are zero.
         /// <para>The amount will be rounded to the number of decimal digits of the specified currency
-        /// (<see cref="NodaMoney.Currency.DecimalDigits"/>). As rounding mode, MidpointRounding.ToEven is used
+        /// (<see cref="NodaMoney.CurrencyInfo.DecimalDigits"/>). As rounding mode, MidpointRounding.ToEven is used
         /// (<see cref="System.MidpointRounding"/>). The behavior of this method follows IEEE Standard 754, section 4. This
         /// kind of rounding is sometimes called rounding to nearest, or banker's rounding. It minimizes rounding errors that
         /// result from consistently rounding a midpoint value in a single direction.</para></remarks>
         public Money(double amount, string code)
-            : this((decimal)amount, Currency.FromCode(code))
+            : this((decimal)amount, CurrencyInfo.FromCode(code))
         {
         }
 
@@ -126,11 +126,11 @@ namespace NodaMoney
         /// <remarks>This constructor will first convert to decimal by rounding the value to 15 significant digits using rounding
         /// to nearest. This is done even if the number has more than 15 digits and the less significant digits are zero.
         /// <para>The amount will be rounded to the number of decimal digits of the specified currency
-        /// (<see cref="NodaMoney.Currency.DecimalDigits"/>). As rounding mode, MidpointRounding.ToEven is used
+        /// (<see cref="NodaMoney.CurrencyInfo.DecimalDigits"/>). As rounding mode, MidpointRounding.ToEven is used
         /// (<see cref="System.MidpointRounding"/>). The behavior of this method follows IEEE Standard 754, section 4. This
         /// kind of rounding is sometimes called rounding to nearest, or banker's rounding. It minimizes rounding errors that
         /// result from consistently rounding a midpoint value in a single direction.</para></remarks>
-        public Money(double amount, Currency currency)
+        public Money(double amount, CurrencyInfo currency)
             : this((decimal)amount, currency)
         {
         }
@@ -143,8 +143,8 @@ namespace NodaMoney
         /// <remarks>This constructor will first convert to decimal by rounding the value to 15 significant digits using rounding
         /// to nearest. This is done even if the number has more than 15 digits and the less significant digits are zero.
         /// <para>The amount will be rounded to the number of decimal digits of the specified currency
-        /// (<see cref="NodaMoney.Currency.DecimalDigits"/>).</para></remarks>
-        public Money(double amount, Currency currency, MidpointRounding rounding)
+        /// (<see cref="NodaMoney.CurrencyInfo.DecimalDigits"/>).</para></remarks>
+        public Money(double amount, CurrencyInfo currency, MidpointRounding rounding)
             : this((decimal)amount, currency, rounding)
         {
         }
@@ -166,7 +166,7 @@ namespace NodaMoney
         /// initialize a Money object using an integer literal, without the suffix, as follows:
         /// <code>Money money = new Money(10, "EUR");</code></remarks>
         public Money(long amount, string code)
-            : this((decimal)amount, Currency.FromCode(code))
+            : this((decimal)amount, CurrencyInfo.FromCode(code))
         {
         }
 
@@ -176,7 +176,7 @@ namespace NodaMoney
         /// <remarks>The integral types are implicitly converted to long and the result evaluates to decimal. Therefore you can
         /// initialize a Money object using an integer literal, without the suffix, as follows:
         /// <code>Money money = new Money(10, "EUR");</code></remarks>
-        public Money(long amount, Currency currency)
+        public Money(long amount, CurrencyInfo currency)
             : this((decimal)amount, currency)
         {
         }
@@ -202,7 +202,7 @@ namespace NodaMoney
         /// <code>Money money = new Money(10, "EUR");</code></remarks>
         [CLSCompliant(false)]
         public Money(ulong amount, string code)
-            : this((decimal)amount, Currency.FromCode(code))
+            : this((decimal)amount, CurrencyInfo.FromCode(code))
         {
         }
 
@@ -214,7 +214,7 @@ namespace NodaMoney
         /// initialize a Money object using an integer literal, without the suffix, as follows:
         /// <code>Money money = new Money(10, "EUR");</code></remarks>
         [CLSCompliant(false)]
-        public Money(ulong amount, Currency currency)
+        public Money(ulong amount, CurrencyInfo currency)
             : this((decimal)amount, currency)
         {
         }
@@ -223,7 +223,7 @@ namespace NodaMoney
         public decimal Amount { get; }
 
         /// <summary>Gets the <see cref="Currency"/> of the money.</summary>
-        public Currency Currency { get; }
+        public CurrencyInfo Currency { get; }
 
         /// <summary>Returns a value indicating whether two instances of <see cref="Money"/> are equal.</summary>
         /// <param name="left">A <see cref="Money"/> object on the left side.</param>
@@ -264,13 +264,13 @@ namespace NodaMoney
         /// <summary>Deconstructs the current instance into its components.</summary>
         /// <param name="amount">The Amount of money as <see langword="decimal"/>.</param>
         /// <param name="currency">The Currency of the money.</param>
-        public void Deconstruct(out decimal amount, out Currency currency)
+        public void Deconstruct(out decimal amount, out CurrencyInfo currency)
         {
             amount = Amount;
             currency = Currency;
         }
 
-        private static decimal Round(in decimal amount, in Currency currency, in MidpointRounding rounding)
+        private static decimal Round(in decimal amount, in CurrencyInfo currency, in MidpointRounding rounding)
         {
             // https://stackoverflow.com/questions/43289478/how-can-i-tell-if-a-number-is-a-power-of-10-in-kotlin-or-java
             static bool IsPowerOf10(long n)

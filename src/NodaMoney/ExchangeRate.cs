@@ -14,7 +14,7 @@ namespace NodaMoney
         /// <exception cref="ArgumentNullException">The value of 'baseCurrency' or 'quoteCurrency' cannot be null. </exception>
         /// <exception cref="ArgumentOutOfRangeException">Rate must be greater than zero.</exception>
         /// <exception cref="ArgumentException">The base and quote currency can't be equal.</exception>
-        public ExchangeRate(Currency baseCurrency, Currency quoteCurrency, decimal rate)
+        public ExchangeRate(CurrencyInfo baseCurrency, CurrencyInfo quoteCurrency, decimal rate)
             : this()
         {
             if (baseCurrency == quoteCurrency)
@@ -32,7 +32,7 @@ namespace NodaMoney
         /// <param name="quoteCurrency">The quote currency.</param>
         /// <param name="rate">The rate of the exchange.</param>
         /// <param name="numberOfDecimals">The number of decimals to round the exchange rate to.</param>
-        public ExchangeRate(Currency baseCurrency, Currency quoteCurrency, double rate, int numberOfDecimals = 6)
+        public ExchangeRate(CurrencyInfo baseCurrency, CurrencyInfo quoteCurrency, double rate, int numberOfDecimals = 6)
             : this(baseCurrency, quoteCurrency, Math.Round((decimal)rate, numberOfDecimals))
         {
         }
@@ -42,7 +42,7 @@ namespace NodaMoney
         /// <param name="quoteCode">The code of the quote currency.</param>
         /// <param name="rate">The rate of the exchange.</param>
         public ExchangeRate(string baseCode, string quoteCode, decimal rate)
-            : this(Currency.FromCode(baseCode), Currency.FromCode(quoteCode), rate)
+            : this(CurrencyInfo.FromCode(baseCode), CurrencyInfo.FromCode(quoteCode), rate)
         {
         }
 
@@ -52,17 +52,17 @@ namespace NodaMoney
         /// <param name="rate">The rate of the exchange.</param>
         /// <param name="numberOfDecimals">The number of decimals to round the exchange rate to.</param>
         public ExchangeRate(string baseCode, string quoteCode, double rate, int numberOfDecimals = 6)
-            : this(Currency.FromCode(baseCode), Currency.FromCode(quoteCode), rate, numberOfDecimals)
+            : this(CurrencyInfo.FromCode(baseCode), CurrencyInfo.FromCode(quoteCode), rate, numberOfDecimals)
         {
         }
 
         /// <summary>Gets the base currency.</summary>
         /// <value>The base currency.</value>
-        public Currency BaseCurrency { get; private set; }
+        public CurrencyInfo BaseCurrency { get; private set; }
 
         /// <summary>Gets the quote currency.</summary>
         /// <value>The quote currency.</value>
-        public Currency QuoteCurrency { get; private set; }
+        public CurrencyInfo QuoteCurrency { get; private set; }
 
         /// <summary>Gets the value of the exchange rate.</summary>
         /// <value>The value of the exchange rate.</value>
@@ -114,9 +114,9 @@ namespace NodaMoney
                     throw new ArgumentNullException(nameof(rate));
 
                 rate = rate.Trim();
-                var baseCurrency = Currency.FromCode(rate.Substring(0, 3));
+                var baseCurrency = CurrencyInfo.FromCode(rate.Substring(0, 3));
                 int index = rate.Substring(3, 1) == "/" ? 4 : 3;
-                var quoteCurrency = Currency.FromCode(rate.Substring(index, 3));
+                var quoteCurrency = CurrencyInfo.FromCode(rate.Substring(index, 3));
                 var value = decimal.Parse(rate.Remove(0, index + 3), NumberFormatInfo.CurrentInfo);
 
                 result = new ExchangeRate(baseCurrency, quoteCurrency, value);
@@ -136,7 +136,7 @@ namespace NodaMoney
         /// <param name="baseCurrency">The base currency.</param>
         /// <param name="quoteCurrency">The quote currency.</param>
         /// <param name="rate">The rate of the exchange.</param>
-        public void Deconstruct(out Currency baseCurrency, out Currency quoteCurrency, out decimal rate)
+        public void Deconstruct(out CurrencyInfo baseCurrency, out CurrencyInfo quoteCurrency, out decimal rate)
         {
             baseCurrency = BaseCurrency;
             quoteCurrency = QuoteCurrency;

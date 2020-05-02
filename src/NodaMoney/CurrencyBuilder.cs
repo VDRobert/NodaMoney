@@ -86,44 +86,44 @@ namespace NodaMoney
         /// <summary>Unregisters the specified currency code from the current AppDomain and returns it.</summary>
         /// <param name="code">The name of the currency to unregister.</param>
         /// <param name="namespace">The namespace of the currency to unregister from.</param>
-        /// <returns>An instance of the type <see cref="Currency"/>.</returns>
+        /// <returns>An instance of the type <see cref="CurrencyInfo"/>.</returns>
         /// <exception cref="ArgumentException">code specifies a currency that is not found in the given namespace.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="code" /> or <paramref name="namespace" /> is <see langword="null" /> or empty.</exception>
-        public static Currency Unregister(string code, string @namespace)
+        public static CurrencyInfo Unregister(string code, string @namespace)
         {
             if (string.IsNullOrWhiteSpace(code))
                 throw new ArgumentNullException(nameof(code));
             if (string.IsNullOrWhiteSpace(@namespace))
                 throw new ArgumentNullException(nameof(@namespace));
 
-            if (!CurrencyRegistry.TryRemove(code, @namespace, out Currency currency))
+            if (!CurrencyRegistry.TryRemove(code, @namespace, out CurrencyInfo currency))
                 throw new InvalidCurrencyException($"code {code} specifies a currency that is not found in the namespace {@namespace}!");
 
             return currency;
         }
 
         /// <summary>Builds the current <see cref="CurrencyBuilder"/> object as a custom currency.</summary>
-        /// <returns>A <see cref="Currency"/> instance that is build.</returns>
+        /// <returns>A <see cref="CurrencyInfo"/> instance that is build.</returns>
         //// <exception cref="InvalidOperationException">The current CurrencyBuilder object has a property that must be set before the currency can be registered.</exception>
-        public Currency Build()
+        public CurrencyInfo Build()
         {
             // throw new InvalidOperationException("The current CurrencyBuilder object has a property that must be set before the currency can be registered.");
             if (string.IsNullOrWhiteSpace(Symbol))
-                Symbol = Currency.GenericCurrencySign;
+                Symbol = CurrencyInfo.GenericCurrencySign;
 
             var nsIndex = (byte)CurrencyRegistry.GetOrAddNamespaceIndex(Namespace);
-            return new Currency(Code, _number, _decimalDigits, EnglishName, Symbol, nsIndex, ValidTo, ValidFrom);
+            return new CurrencyInfo(Code, _number, _decimalDigits, EnglishName, Symbol, nsIndex, ValidTo, ValidFrom);
         }
 
         /// <summary>Registers the current <see cref="CurrencyBuilder"/> object as a custom currency for the current AppDomain.</summary>
-        /// <returns>A <see cref="Currency"/> instance that is build and registered.</returns>
+        /// <returns>A <see cref="CurrencyInfo"/> instance that is build and registered.</returns>
         /// <exception cref="InvalidOperationException">
         ///     <para>The custom currency is already registered -or-.</para>
         ///     <para>The current CurrencyBuilder object has a property that must be set before the currency can be registered.</para>
         /// </exception>
-        public Currency Register()
+        public CurrencyInfo Register()
         {
-            Currency currency = Build();
+            CurrencyInfo currency = Build();
             if (!CurrencyRegistry.TryAdd(Code, Namespace, currency))
                 throw new InvalidCurrencyException($"The currency {Code} is already registered in {Namespace}.");
 
@@ -150,9 +150,9 @@ namespace NodaMoney
         }
 
         /// <summary>Sets the properties of the current <see cref="CurrencyBuilder"/> object with the corresponding properties of
-        /// the specified <see cref="Currency"/> object, except for the code and namespace.</summary>
+        /// the specified <see cref="CurrencyInfo"/> object, except for the code and namespace.</summary>
         /// <param name="currency">The object whose properties will be used.</param>
-        public void LoadDataFromCurrency(Currency currency)
+        public void LoadDataFromCurrency(CurrencyInfo currency)
         {
             EnglishName = currency.EnglishName;
             Symbol = currency.Symbol;

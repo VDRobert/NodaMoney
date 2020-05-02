@@ -46,10 +46,10 @@ namespace NodaMoney.Tests.Serialization.MoneySerializableSpec
     {
         public static IEnumerable<object[]> TestData => new[]
         {
-                new object[] { new Money(765.4321m, Currency.FromCode("JPY")) },
-                new object[] { new Money(765.4321m, Currency.FromCode("EUR")) },
-                new object[] { new Money(765.4321m, Currency.FromCode("USD")) }, 
-                new object[] { new Money(765.4321m, Currency.FromCode("BHD")) },
+                new object[] { new Money(765.4321m, CurrencyInfo.FromCode("JPY")) },
+                new object[] { new Money(765.4321m, CurrencyInfo.FromCode("EUR")) },
+                new object[] { new Money(765.4321m, CurrencyInfo.FromCode("USD")) }, 
+                new object[] { new Money(765.4321m, CurrencyInfo.FromCode("BHD")) },
                 new object[] { default(Money) },
                 new object[] { default(Money?) }
         };
@@ -60,7 +60,7 @@ namespace NodaMoney.Tests.Serialization.MoneySerializableSpec
         {
             string json = JsonConvert.SerializeObject(money.Currency);
             // Console.WriteLine(json);
-            var clone = JsonConvert.DeserializeObject<Currency>(json);
+            var clone = JsonConvert.DeserializeObject<CurrencyInfo>(json);
 
             clone.Should().Be(money.Currency);
         }
@@ -117,8 +117,8 @@ namespace NodaMoney.Tests.Serialization.MoneySerializableSpec
 
     public class GivenIWantToSerializeMoneyWithDataContractSerializer
     {
-        private Money yen = new Money(765m, Currency.FromCode("JPY"));
-        private Money euro = new Money(765.43m, Currency.FromCode("EUR"));
+        private Money yen = new Money(765m, CurrencyInfo.FromCode("JPY"));
+        private Money euro = new Money(765.43m, CurrencyInfo.FromCode("EUR"));
 
         [Fact]
         public void WhenSerializingYen_ThenThisShouldSucceed()
@@ -172,8 +172,8 @@ namespace NodaMoney.Tests.Serialization.MoneySerializableSpec
 
     public class GivenIWantToSerializeMoneyWitXmlSerializer
     {
-        private Money yen = new Money(765m, Currency.FromCode("JPY"));
-        private Money euro = new Money(765.43m, Currency.FromCode("EUR"));
+        private Money yen = new Money(765m, CurrencyInfo.FromCode("JPY"));
+        private Money euro = new Money(765.43m, CurrencyInfo.FromCode("EUR"));
 
         [Fact]
         public void WhenSerializingYen_ThenThisShouldSucceed()
@@ -224,8 +224,8 @@ namespace NodaMoney.Tests.Serialization.MoneySerializableSpec
 
     public class GivenIWantToSerializeMoneyWithBinaryFormatter
     {
-        private Money yen = new Money(765m, Currency.FromCode("JPY"));
-        private Money euro = new Money(765.43m, Currency.FromCode("EUR"));
+        private Money yen = new Money(765m, CurrencyInfo.FromCode("JPY"));
+        private Money euro = new Money(765.43m, CurrencyInfo.FromCode("EUR"));
 
         [Fact]
         public void WhenSerializingYen_ThenThisShouldSucceed()

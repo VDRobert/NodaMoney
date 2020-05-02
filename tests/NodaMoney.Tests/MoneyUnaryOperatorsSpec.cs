@@ -7,7 +7,7 @@ namespace NodaMoney.Tests.UnaryOperatorsSpec
     {
         [Theory]
         [MemberData(nameof(TestData))]
-        public void WhenIncrementing_ThenAmountShouldIncrementWithMinorUnit(Money money, Currency expectedCurrency, decimal expectedDifference)
+        public void WhenIncrementing_ThenAmountShouldIncrementWithMinorUnit(Money money, CurrencyInfo expectedCurrency, decimal expectedDifference)
         {
             decimal amountBefore = money.Amount;
 
@@ -21,7 +21,7 @@ namespace NodaMoney.Tests.UnaryOperatorsSpec
 
         [Theory]
         [MemberData(nameof(TestData))]
-        public void WhenDecrementing_ThenAmountShouldDecrementWithMinorUnit(Money money, Currency expectedCurrency, decimal expectedDifference)
+        public void WhenDecrementing_ThenAmountShouldDecrementWithMinorUnit(Money money, CurrencyInfo expectedCurrency, decimal expectedDifference)
         {
             decimal amountBefore = money.Amount;
 
@@ -33,12 +33,12 @@ namespace NodaMoney.Tests.UnaryOperatorsSpec
             money.Amount.Should().Be(amountBefore - expectedDifference);
         }
 
-        public static TheoryData<Money, Currency, decimal> TestData => new TheoryData<Money, Currency, decimal>
+        public static TheoryData<Money, CurrencyInfo, decimal> TestData => new TheoryData<Money, CurrencyInfo, decimal>
         {
-            { new Money(765m, Currency.FromCode("JPY")), Currency.FromCode("JPY"), Currency.FromCode("JPY").MinimalAmount },
-            { new Money(765.43m, Currency.FromCode("EUR")), Currency.FromCode("EUR"), Currency.FromCode("EUR").MinimalAmount },
-            { new Money(765.43m, Currency.FromCode("USD")), Currency.FromCode("USD"), Currency.FromCode("USD").MinimalAmount },
-            { new Money(765.432m, Currency.FromCode("BHD")), Currency.FromCode("BHD"), Currency.FromCode("BHD").MinimalAmount }
+            { new Money(765m, CurrencyInfo.FromCode("JPY")), CurrencyInfo.FromCode("JPY"), CurrencyInfo.FromCode("JPY").MinimalAmount },
+            { new Money(765.43m, CurrencyInfo.FromCode("EUR")), CurrencyInfo.FromCode("EUR"), CurrencyInfo.FromCode("EUR").MinimalAmount },
+            { new Money(765.43m, CurrencyInfo.FromCode("USD")), CurrencyInfo.FromCode("USD"), CurrencyInfo.FromCode("USD").MinimalAmount },
+            { new Money(765.432m, CurrencyInfo.FromCode("BHD")), CurrencyInfo.FromCode("BHD"), CurrencyInfo.FromCode("BHD").MinimalAmount }
         };
     }
 

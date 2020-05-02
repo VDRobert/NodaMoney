@@ -10,10 +10,10 @@ namespace NodaMoney.Tests.MoneyFormattableSpec
     [Collection(nameof(NoParallelization))]
     public class GivenIWantMoneyAsString
     {
-        private Money _yen = new Money(765.4321m, Currency.FromCode("JPY"));
-        private Money _euro = new Money(765.4321m, Currency.FromCode("EUR"));
-        private Money _dollar = new Money(765.4321m, Currency.FromCode("USD"));
-        private Money _dinar = new Money(765.4321m, Currency.FromCode("BHD"));
+        private Money _yen = new Money(765.4321m, CurrencyInfo.FromCode("JPY"));
+        private Money _euro = new Money(765.4321m, CurrencyInfo.FromCode("EUR"));
+        private Money _dollar = new Money(765.4321m, CurrencyInfo.FromCode("USD"));
+        private Money _dinar = new Money(765.4321m, CurrencyInfo.FromCode("BHD"));
 
         [Fact]
         [UseCulture("en-US")]
@@ -127,7 +127,7 @@ namespace NodaMoney.Tests.MoneyFormattableSpec
         [Fact]
         public void WhenNumberOfDecimalsIsNotApplicable_ThenToStringShouldNotFail()
         {
-            var xdr = new Money(765.4321m, Currency.FromCode("XDR"));
+            var xdr = new Money(765.4321m, CurrencyInfo.FromCode("XDR"));
             
             Action action = () => xdr.ToString();
 
@@ -138,10 +138,10 @@ namespace NodaMoney.Tests.MoneyFormattableSpec
     [Collection(nameof(NoParallelization))]
     public class GivenIWantMoneyAsStringWithCurrencySymbol
     {
-        private Money _yen = new Money(765.4321m, Currency.FromCode("JPY"));
-        private Money _euro = new Money(765.4321m, Currency.FromCode("EUR"));
-        private Money _dollar = new Money(765.4321m, Currency.FromCode("USD"));
-        private Money _dinar = new Money(765.4321m, Currency.FromCode("BHD"));
+        private Money _yen = new Money(765.4321m, CurrencyInfo.FromCode("JPY"));
+        private Money _euro = new Money(765.4321m, CurrencyInfo.FromCode("EUR"));
+        private Money _dollar = new Money(765.4321m, CurrencyInfo.FromCode("USD"));
+        private Money _dinar = new Money(765.4321m, CurrencyInfo.FromCode("BHD"));
 
         [Fact]
         [UseCulture("en-US")]
@@ -235,10 +235,10 @@ namespace NodaMoney.Tests.MoneyFormattableSpec
     [Collection(nameof(NoParallelization))]
     public class GivenIWantMoneyAsStringWithCurrencyCode
     {
-        private Money _yen = new Money(765.4321m, Currency.FromCode("JPY"));
-        private Money _euro = new Money(765.4321m, Currency.FromCode("EUR"));
-        private Money _dollar = new Money(765.4321m, Currency.FromCode("USD"));
-        private Money _dinar = new Money(765.4321m, Currency.FromCode("BHD"));
+        private Money _yen = new Money(765.4321m, CurrencyInfo.FromCode("JPY"));
+        private Money _euro = new Money(765.4321m, CurrencyInfo.FromCode("EUR"));
+        private Money _dollar = new Money(765.4321m, CurrencyInfo.FromCode("USD"));
+        private Money _dinar = new Money(765.4321m, CurrencyInfo.FromCode("BHD"));
 
         [Fact]
         [UseCulture("en-US")]
@@ -332,10 +332,10 @@ namespace NodaMoney.Tests.MoneyFormattableSpec
     [Collection(nameof(NoParallelization))]
     public class GivenIWantMoneyAsStringWithEnglishCurrencyName
     {
-        private Money _yen = new Money(765.4321m, Currency.FromCode("JPY"));
-        private Money _euro = new Money(765.4321m, Currency.FromCode("EUR"));
-        private Money _dollar = new Money(765.4321m, Currency.FromCode("USD"));
-        private Money _dinar = new Money(765.4321m, Currency.FromCode("BHD"));
+        private Money _yen = new Money(765.4321m, CurrencyInfo.FromCode("JPY"));
+        private Money _euro = new Money(765.4321m, CurrencyInfo.FromCode("EUR"));
+        private Money _dollar = new Money(765.4321m, CurrencyInfo.FromCode("USD"));
+        private Money _dinar = new Money(765.4321m, CurrencyInfo.FromCode("BHD"));
 
         [Fact]
         [UseCulture("pt-BR")]

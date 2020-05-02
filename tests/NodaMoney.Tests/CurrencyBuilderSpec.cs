@@ -11,11 +11,11 @@ namespace NodaMoney.Tests.CurrencyBuilderSpec
         [Fact]
         public void WhenRegisterAsSimpleAsPossible_ThenShouldBeAvailableWithDefaults()
         {
-            Currency result = new CurrencyBuilder("BTC4", "ISO-4217").Register();
+            CurrencyInfo result = new CurrencyBuilder("BTC4", "ISO-4217").Register();
 
-            Currency bitcoin = Currency.FromCode("BTC4");
+            CurrencyInfo bitcoin = CurrencyInfo.FromCode("BTC4");
             bitcoin.Namespace.Should().Be("ISO-4217");
-            bitcoin.Symbol.Should().Be(Currency.GenericCurrencySign); // ¤
+            bitcoin.Symbol.Should().Be(CurrencyInfo.GenericCurrencySign); // ¤
             bitcoin.Should().BeEquivalentTo(result);
         }
 
@@ -30,9 +30,9 @@ namespace NodaMoney.Tests.CurrencyBuilderSpec
                 DecimalDigits = 8
             };
 
-            Currency result = builder.Register();
+            CurrencyInfo result = builder.Register();
 
-            Currency bitcoin = Currency.FromCode("BTC");
+            CurrencyInfo bitcoin = CurrencyInfo.FromCode("BTC");
             bitcoin.Symbol.Should().Be("฿");
             bitcoin.Should().BeEquivalentTo(result);
         }
@@ -48,9 +48,9 @@ namespace NodaMoney.Tests.CurrencyBuilderSpec
                 DecimalDigits = 8
             };
 
-            Currency result = builder.Register();
+            CurrencyInfo result = builder.Register();
 
-            Currency bitcoin = Currency.FromCode("BTC1", "virtual");
+            CurrencyInfo bitcoin = CurrencyInfo.FromCode("BTC1", "virtual");
             bitcoin.Symbol.Should().Be("฿");
             bitcoin.Should().BeEquivalentTo(result);
         }
@@ -66,10 +66,10 @@ namespace NodaMoney.Tests.CurrencyBuilderSpec
                 DecimalDigits = 8
             };
 
-            Currency result = builder.Build();
+            CurrencyInfo result = builder.Build();
             result.Symbol.Should().Be("฿");
 
-            Action action = () => Currency.FromCode("BTC2", "virtual");
+            Action action = () => CurrencyInfo.FromCode("BTC2", "virtual");
             action.Should().Throw<InvalidCurrencyException>().WithMessage("BTC2 is an unknown virtual currency code!");
         }
 
@@ -78,7 +78,7 @@ namespace NodaMoney.Tests.CurrencyBuilderSpec
         {
             var builder = new CurrencyBuilder("BTC3", "virtual");
 
-            var euro = Currency.FromCode("EUR");
+            var euro = CurrencyInfo.FromCode("EUR");
             builder.LoadDataFromCurrency(euro);
 
             builder.Code.Should().Be("BTC3");
@@ -96,7 +96,7 @@ namespace NodaMoney.Tests.CurrencyBuilderSpec
         {
             var builder = new CurrencyBuilder("EUR", "ISO-4217");
 
-            var euro = Currency.FromCode("EUR");
+            var euro = CurrencyInfo.FromCode("EUR");
             builder.LoadDataFromCurrency(euro);
 
             Action action = () => builder.Register();
@@ -139,7 +139,7 @@ namespace NodaMoney.Tests.CurrencyBuilderSpec
         [Fact]
         public void WhenSymbolIsEmpty_ThenSymbolMustBeDefaultCurrencySign()
         {
-            Currency result = new CurrencyBuilder("BTC5", "ISO-4217")
+            CurrencyInfo result = new CurrencyBuilder("BTC5", "ISO-4217")
             {
                 EnglishName = "Bitcoin",
                 //Symbol = "฿",
@@ -147,8 +147,8 @@ namespace NodaMoney.Tests.CurrencyBuilderSpec
                 DecimalDigits = 8,
             }.Register();
 
-            Currency bitcoin = Currency.FromCode("BTC5");
-            bitcoin.Symbol.Should().Be(Currency.GenericCurrencySign); // ¤
+            CurrencyInfo bitcoin = CurrencyInfo.FromCode("BTC5");
+            bitcoin.Symbol.Should().Be(CurrencyInfo.GenericCurrencySign); // ¤
             bitcoin.Should().BeEquivalentTo(result);
         }
     }
@@ -159,10 +159,10 @@ namespace NodaMoney.Tests.CurrencyBuilderSpec
         [Fact]
         public void WhenUnregisterIsoCurrency_ThenThisMustSucceed()
         {
-            var money = Currency.FromCode("PEN"); // should work
+            var money = CurrencyInfo.FromCode("PEN"); // should work
 
             CurrencyBuilder.Unregister("PEN", "ISO-4217");
-            Action action = () => Currency.FromCode("PEN");
+            Action action = () => CurrencyInfo.FromCode("PEN");
 
             action.Should().Throw<InvalidCurrencyException>().WithMessage("*unknown*currency*");
         }
@@ -179,10 +179,10 @@ namespace NodaMoney.Tests.CurrencyBuilderSpec
             };
 
             builder.Register();
-            Currency xyz = Currency.FromCode("XYZ", "virtual"); // should work
+            CurrencyInfo xyz = CurrencyInfo.FromCode("XYZ", "virtual"); // should work
 
             CurrencyBuilder.Unregister("XYZ", "virtual");
-            Action action = () => Currency.FromCode("XYZ", "virtual");
+            Action action = () => CurrencyInfo.FromCode("XYZ", "virtual");
 
             action.Should().Throw<InvalidCurrencyException>().WithMessage("*unknown*currency*");
         }
@@ -235,7 +235,7 @@ namespace NodaMoney.Tests.CurrencyBuilderSpec
         public void WhenReplacingEuroWithCustom_ThenThisShouldSucceed()
         {
             // Panamanian balboa
-            Currency oldEuro = CurrencyBuilder.Unregister("PAB", "ISO-4217");
+            CurrencyInfo oldEuro = CurrencyBuilder.Unregister("PAB", "ISO-4217");
 
             var builder = new CurrencyBuilder("PAB", "ISO-4217");
             builder.LoadDataFromCurrency(oldEuro);
@@ -244,7 +244,7 @@ namespace NodaMoney.Tests.CurrencyBuilderSpec
 
             builder.Register();
 
-            Currency newEuro = Currency.FromCode("PAB");
+            CurrencyInfo newEuro = CurrencyInfo.FromCode("PAB");
             newEuro.Symbol.Should().Be("B/.");
             newEuro.EnglishName.Should().Be("New Panamanian balboa");
             newEuro.DecimalDigits.Should().Be(1);

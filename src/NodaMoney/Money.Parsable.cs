@@ -20,7 +20,7 @@ namespace NodaMoney
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentNullException(nameof(value));
 
-            Currency currency = ExtractCurrencyFromString(value);
+            CurrencyInfo currency = ExtractCurrencyFromString(value);
 
             return Parse(value, NumberStyles.Currency, GetFormatProvider(currency, null), currency);
         }
@@ -32,7 +32,7 @@ namespace NodaMoney
         /// <exception cref="System.ArgumentNullException"><i>value</i> is <b>null</b> or empty.</exception>
         /// <exception cref="System.FormatException"><i>value</i> is not in the correct format or the currency sign matches with multiple known currencies.</exception>
         /// <exception cref="System.OverflowException"><i>value</i> represents a number less than <see cref="decimal.MinValue"/> or greater than <see cref="decimal.MaxValue"/>.</exception>
-        public static Money Parse(string value, Currency currency)
+        public static Money Parse(string value, CurrencyInfo currency)
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentNullException(nameof(value));
@@ -49,7 +49,7 @@ namespace NodaMoney
         /// <exception cref="System.ArgumentNullException"><i>value</i> is <b>null</b> or empty.</exception>
         /// <exception cref="System.FormatException"><i>value</i> is not in the correct format or the currency sign matches with multiple known currencies.</exception>
         /// <exception cref="System.OverflowException"><i>value</i> represents a number less than <see cref="decimal.MinValue"/> or greater than <see cref="decimal.MaxValue"/>.</exception>
-        public static Money Parse(string value, NumberStyles style, IFormatProvider provider, Currency currency)
+        public static Money Parse(string value, NumberStyles style, IFormatProvider provider, CurrencyInfo currency)
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentNullException(nameof(value));
@@ -71,18 +71,18 @@ namespace NodaMoney
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                result = new Money(0, Currency.FromCode("XXX"));
+                result = new Money(0, CurrencyInfo.FromCode("XXX"));
                 return false;
             }
 
-            Currency currency;
+            CurrencyInfo currency;
             try
             {
                 currency = ExtractCurrencyFromString(value);
             }
             catch (FormatException)
             {
-                result = new Money(0, Currency.FromCode("XXX"));
+                result = new Money(0, CurrencyInfo.FromCode("XXX"));
                 return false;
             }
 
@@ -99,7 +99,7 @@ namespace NodaMoney
         /// uninitialized; any <i>value</i> originally supplied in result will be overwritten.</param>
         /// <returns><b>true</b> if <i>value</i> was converted successfully; otherwise, <b>false</b>.</returns>
         /// <remarks>See <see cref="decimal.TryParse(string, out decimal)"/> for more info and remarks.</remarks>
-        public static bool TryParse(string value, Currency currency, out Money result)
+        public static bool TryParse(string value, CurrencyInfo currency, out Money result)
         {
             return TryParse(value, NumberStyles.Currency, GetFormatProvider(currency, null), currency, out result);
         }
@@ -116,7 +116,7 @@ namespace NodaMoney
         /// uninitialized; any <i>value</i> originally supplied in result will be overwritten.</param>
         /// <returns><b>true</b> if <i>value</i> was converted successfully; otherwise, <b>false</b>.</returns>
         /// <remarks>See <see cref="decimal.TryParse(string, NumberStyles, IFormatProvider, out decimal)"/> for more info and remarks.</remarks>
-        public static bool TryParse(string value, NumberStyles style, IFormatProvider provider, Currency currency, out Money result)
+        public static bool TryParse(string value, NumberStyles style, IFormatProvider provider, CurrencyInfo currency, out Money result)
         {
             bool isParsingSuccessful = decimal.TryParse(value, style, GetFormatProvider(currency, provider), out decimal amount);
             if (isParsingSuccessful)
@@ -125,23 +125,23 @@ namespace NodaMoney
                 return true;
             }
 
-            result = new Money(0, Currency.FromCode("XXX"));
+            result = new Money(0, CurrencyInfo.FromCode("XXX"));
             return false;
         }
 
-        private static Currency ExtractCurrencyFromString(string value)
+        private static CurrencyInfo ExtractCurrencyFromString(string value)
         {
             // TODO: How to handle alternative symbols, like US$
             string currencyAsString = new string(value.Cast<char>().Where(IsNotNumericCharacter()).ToArray());
 
-            if (currencyAsString.Length == 0 || Currency.CurrentCurrency.Symbol == currencyAsString
-                || Currency.CurrentCurrency.Code == currencyAsString)
+            if (currencyAsString.Length == 0 || CurrencyInfo.CurrentCurrency.Symbol == currencyAsString
+                || CurrencyInfo.CurrentCurrency.Code == currencyAsString)
             {
-                return Currency.CurrentCurrency;
+                return CurrencyInfo.CurrentCurrency;
             }
 
-            List<Currency> match =
-                Currency.GetAllCurrencies().Where(c => c.Symbol == currencyAsString || c.Code == currencyAsString).ToList();
+            List<CurrencyInfo> match =
+                CurrencyInfo.GetAllCurrencies().Where(c => c.Symbol == currencyAsString || c.Code == currencyAsString).ToList();
 
             if (match.Count == 0)
             {

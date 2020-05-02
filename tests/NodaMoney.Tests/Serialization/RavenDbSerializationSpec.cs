@@ -37,7 +37,7 @@ namespace NodaMoney.Tests.Serialization.RavenDbSerializationSpec
         [Fact] //(Skip = "Microsoft.NETCore.App 2.1.10 not installed on build server")]
         public void WhenObjectWithMoneyAttribute_ThenThisMustWork()
         {
-            SampleData sample = new SampleData { Name = "Test", Price = new Money(123.56, "EUR"), BaseCurrency = Currency.FromCode("USD") };
+            SampleData sample = new SampleData { Name = "Test", Price = new Money(123.56, "EUR"), BaseCurrency = CurrencyInfo.FromCode("USD") };
 
             using (var store = GetDocumentStore())
             {
@@ -69,6 +69,6 @@ namespace NodaMoney.Tests.Serialization.RavenDbSerializationSpec
 
         public Money Price { get; set; }
 
-        public Currency BaseCurrency { get; set; }
+        public CurrencyInfo BaseCurrency { get; set; }
     }
 }

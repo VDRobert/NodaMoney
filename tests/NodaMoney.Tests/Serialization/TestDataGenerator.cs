@@ -7,7 +7,7 @@ namespace NodaMoney.Tests.Serialization
     {
         public ValidJsonTestData()
         {
-            var money = new Money(234.25m, Currency.FromCode("EUR"));
+            var money = new Money(234.25m, CurrencyInfo.FromCode("EUR"));
 
             Add("{ \"Amount\": 234.25, \"Currency\": \"EUR\" }", money); // PascalCase, Amount as number
             Add("{ \"Currency\": \"EUR\", \"Amount\": 234.25 }", money); // PascalCase, Amount as number, Reversed members
@@ -86,7 +86,7 @@ namespace NodaMoney.Tests.Serialization
             {
                 Id = 123,
                 Name = "Abc",
-                Price = new Money(234.25m, Currency.FromCode("EUR"))
+                Price = new Money(234.25m, CurrencyInfo.FromCode("EUR"))
             };
 
             Add("{ \"Id\": 123, \"Name\": \"Abc\", \"Price\": { \"Amount\": 234.25, \"Currency\": \"EUR\" } }", order); // Amount as number

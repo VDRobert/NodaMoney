@@ -20,7 +20,7 @@ namespace NodaMoney
     [Serializable]
     [DebuggerDisplay("{Code}")]
     [TypeConverter(typeof(CurrencyTypeConverter))]
-    public readonly struct Currency : IEquatable<Currency>, IXmlSerializable, ISerializable
+    public class CurrencyInfo : IEquatable<CurrencyInfo>, IXmlSerializable, ISerializable
     {
         /// <summary>Gets the currency sign (¤), a character used to denote the generic currency sign, when no currency sign is available.</summary>
         /// <remarks>See https://en.wikipedia.org/wiki/Currency_sign_(typography). </remarks>
@@ -35,13 +35,13 @@ namespace NodaMoney
         private readonly DateTime? _validFrom;
         private readonly DateTime? _validTo;
 
-        /// <summary>Initializes a new instance of the <see cref="Currency" /> struct.</summary>
+        /// <summary>Initializes a new instance of the <see cref="CurrencyInfo" /> struct.</summary>
         /// <param name="code">The code.</param>
         /// <param name="namespace">The namespace.</param>
         /// <remarks>Used in serialization.</remarks>
-        internal Currency(string code, string @namespace = "ISO-4217")
+        internal CurrencyInfo(string code, string @namespace = "ISO-4217")
         {
-            ref Currency c = ref FromCode(code, @namespace);
+            ref CurrencyInfo c = ref FromCode(code, @namespace);
 
             _code = c.Code;
             _number = c.Number;
@@ -53,7 +53,7 @@ namespace NodaMoney
             _validFrom = c.ValidFrom;
         }
 
-        /// <summary>Initializes a new instance of the <see cref="Currency" /> struct.</summary>
+        /// <summary>Initializes a new instance of the <see cref="CurrencyInfo" /> struct.</summary>
         /// <param name="code">The code.</param>
         /// <param name="number">The number.</param>
         /// <param name="minorUnitAsPowerOfTen">The decimal digits.</param>
@@ -64,8 +64,8 @@ namespace NodaMoney
         /// <param name="validFrom">The valid from the specified date.</param>
         /// <exception cref="System.ArgumentNullException">code or number or englishName or symbol is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">DecimalDigits must greater or equal to zero and smaller or equal to 28, or -1 if not applicable.</exception>
-        internal Currency(string code, short number, byte minorUnitAsPowerOfTen, string englishName, string symbol, byte @namespace = 0, DateTime? validTo = null, DateTime? validFrom = null)
-            : this()
+        internal CurrencyInfo(string code, short number, byte minorUnitAsPowerOfTen, string englishName, string symbol, byte @namespace = 0, DateTime? validTo = null, DateTime? validFrom = null)
+            //: this()
         {
             if (string.IsNullOrWhiteSpace(code))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(code));
@@ -83,7 +83,7 @@ namespace NodaMoney
         }
 
 #pragma warning disable CA1801 // Parameter context of method.ctor is never used.
-        private Currency(SerializationInfo info, StreamingContext context)
+        private CurrencyInfo(SerializationInfo info, StreamingContext context)
         : this(info.GetString("code"), info.GetString("namespace"))
         {
         }
@@ -91,7 +91,7 @@ namespace NodaMoney
 
         /// <summary>Gets the Currency that represents the country/region used by the current thread.</summary>
         /// <value>The Currency that represents the country/region used by the current thread.</value>
-        public static ref Currency CurrentCurrency
+        public static ref CurrencyInfo CurrentCurrency
         {
             get
             {
@@ -260,41 +260,41 @@ namespace NodaMoney
         /// <param name="left">The left Currency.</param>
         /// <param name="right">The right Currency.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator ==(Currency left, Currency right) => left.Equals(right);
+        public static bool operator ==(CurrencyInfo left, CurrencyInfo right) => left.Equals(right);
 
         /// <summary>Implements the operator ==.</summary>
         /// <param name="left">The left Currency.</param>
         /// <param name="right">The right Currency.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator !=(Currency left, Currency right) => !(left == right);
+        public static bool operator !=(CurrencyInfo left, CurrencyInfo right) => !(left == right);
 
-        /// <summary>Create an instance of the <see cref="Currency"/>, based on a ISO 4217 currency code.</summary>
+        /// <summary>Create an instance of the <see cref="CurrencyInfo"/>, based on a ISO 4217 currency code.</summary>
         /// <param name="code">A ISO 4217 currency code, like EUR or USD.</param>
-        /// <returns>An instance of the type <see cref="Currency"/>.</returns>
+        /// <returns>An instance of the type <see cref="CurrencyInfo"/>.</returns>
         /// <exception cref="ArgumentNullException">The value of 'code' cannot be null.</exception>
         /// <exception cref="ArgumentException">The 'code' is an unknown ISO 4217 currency code.</exception>
-        public static ref Currency FromCode(string code)
+        public static ref CurrencyInfo FromCode(string code)
         {
             return ref CurrencyRegistry.Get(code);
         }
 
-        /// <summary>Create an instance of the <see cref="Currency"/> of the given code and namespace.</summary>
+        /// <summary>Create an instance of the <see cref="CurrencyInfo"/> of the given code and namespace.</summary>
         /// <param name="code">A currency code, like EUR or USD.</param>
         /// <param name="namespace">A namespace, like ISO-4217.</param>
-        /// <returns>An instance of the type <see cref="Currency"/>.</returns>
+        /// <returns>An instance of the type <see cref="CurrencyInfo"/>.</returns>
         /// <exception cref="ArgumentNullException">The value of 'code' or 'namespace' cannot be null or empty.</exception>
         /// <exception cref="ArgumentException">The 'code' in the given namespace is an unknown.</exception>
-        public static ref Currency FromCode(string code, string @namespace)
+        public static ref CurrencyInfo FromCode(string code, string @namespace)
         {
             return ref CurrencyRegistry.Get(code, @namespace);
         }
 
-        /// <summary>Creates an instance of the <see cref="Currency"/> used within the specified <see cref="RegionInfo"/>.</summary>
-        /// <param name="region"><see cref="RegionInfo"/> to get a <see cref="Currency"/> for.</param>
-        /// <returns>The <see cref="Currency"/> instance used within the specified <see cref="RegionInfo"/>.</returns>
+        /// <summary>Creates an instance of the <see cref="CurrencyInfo"/> used within the specified <see cref="RegionInfo"/>.</summary>
+        /// <param name="region"><see cref="RegionInfo"/> to get a <see cref="CurrencyInfo"/> for.</param>
+        /// <returns>The <see cref="CurrencyInfo"/> instance used within the specified <see cref="RegionInfo"/>.</returns>
         /// <exception cref="ArgumentNullException">The value of 'region' cannot be null.</exception>
         /// <exception cref="ArgumentException">The 'code' is an unknown ISO 4217 currency code.</exception>
-        public static ref Currency FromRegion(RegionInfo region)
+        public static ref CurrencyInfo FromRegion(RegionInfo region)
         {
             if (region == null)
                 throw new ArgumentNullException(nameof(region));
@@ -302,15 +302,15 @@ namespace NodaMoney
             return ref FromCode(region.ISOCurrencySymbol, "ISO-4217");
         }
 
-        /// <summary>Creates an instance of the <see cref="Currency"/> used within the specified <see cref="CultureInfo"/>.</summary>
-        /// <param name="culture"><see cref="CultureInfo"/> to get a <see cref="Currency"/> for.</param>
-        /// <returns>The <see cref="Currency"/> instance used within the specified <see cref="CultureInfo"/>.</returns>
+        /// <summary>Creates an instance of the <see cref="CurrencyInfo"/> used within the specified <see cref="CultureInfo"/>.</summary>
+        /// <param name="culture"><see cref="CultureInfo"/> to get a <see cref="CurrencyInfo"/> for.</param>
+        /// <returns>The <see cref="CurrencyInfo"/> instance used within the specified <see cref="CultureInfo"/>.</returns>
         /// <exception cref="ArgumentNullException">The value of 'culture' cannot be null.</exception>
         /// <exception cref="ArgumentException">
         /// Culture is a neutral culture, from which no region information can be extracted -or-
         /// The 'code' is an unknown ISO 4217 currency code.
         /// </exception>
-        public static ref Currency FromCulture(CultureInfo culture)
+        public static ref CurrencyInfo FromCulture(CultureInfo culture)
         {
             if (culture == null)
                 throw new ArgumentNullException(nameof(culture));
@@ -320,7 +320,7 @@ namespace NodaMoney
             return ref FromRegion(culture.Name);
         }
 
-        /// <summary>Creates an instance of the <see cref="Currency"/> used within the specified name of the region or culture.</summary>
+        /// <summary>Creates an instance of the <see cref="CurrencyInfo"/> used within the specified name of the region or culture.</summary>
         /// <param name="name">
         /// <para>A string that contains a two-letter code defined in ISO 3166 for country/region.</para>
         /// <para>-or-</para>
@@ -328,9 +328,9 @@ namespace NodaMoney
         /// culture name is not in RFC 4646 format, your application should specify the entire culture name instead of just the
         /// country/region. See also <seealso cref="System.Globalization.RegionInfo(string)"/>.</para>
         /// </param>
-        /// <returns>The <see cref="Currency"/> instance used within the specified region.</returns>
+        /// <returns>The <see cref="CurrencyInfo"/> instance used within the specified region.</returns>
         /// <exception cref="ArgumentNullException">The value of 'name' cannot be null.</exception>
-        public static ref Currency FromRegion(string name)
+        public static ref CurrencyInfo FromRegion(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
@@ -340,25 +340,25 @@ namespace NodaMoney
 
         /// <summary>Get all currencies.</summary>
         /// <returns>An <see cref="IEnumerable{Currency}"/> of all registered currencies.</returns>
-        public static IEnumerable<Currency> GetAllCurrencies() => CurrencyRegistry.GetAllCurrencies();
+        public static IEnumerable<CurrencyInfo> GetAllCurrencies() => CurrencyRegistry.GetAllCurrencies();
 
-        /// <summary>Returns a value indicating whether two specified instances of <see cref="Currency"/> represent the same value.</summary>
-        /// <param name="left">The first <see cref="Currency"/> object.</param>
-        /// <param name="right">The second <see cref="Currency"/> object.</param>
+        /// <summary>Returns a value indicating whether two specified instances of <see cref="CurrencyInfo"/> represent the same value.</summary>
+        /// <param name="left">The first <see cref="CurrencyInfo"/> object.</param>
+        /// <param name="right">The second <see cref="CurrencyInfo"/> object.</param>
         /// <returns>true if left and right are equal to this instance; otherwise, false.</returns>
         [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Justification = "Calling override method")]
-        public static bool Equals(Currency left, Currency right) => left.Equals(right);
+        public static bool Equals(CurrencyInfo left, CurrencyInfo right) => left.Equals(right);
 
         /// <summary>Returns a value indicating whether this instance and a specified <see cref="object"/> represent the same type and value.</summary>
         /// <param name="obj">An <see cref="object"/>.</param>
         /// <returns>true if value is equal to this instance; otherwise, false.</returns>
-        public override bool Equals(object obj) => obj is Currency currency && Equals(currency);
+        public override bool Equals(object obj) => obj is CurrencyInfo currency && Equals(currency);
 
-        /// <summary>Returns a value indicating whether this instance and a specified <see cref="Currency"/> object represent the same value.</summary>
-        /// <param name="other">A <see cref="Currency"/> object.</param>
+        /// <summary>Returns a value indicating whether this instance and a specified <see cref="CurrencyInfo"/> object represent the same value.</summary>
+        /// <param name="other">A <see cref="CurrencyInfo"/> object.</param>
         /// <returns>true if value is equal to this instance; otherwise, false.</returns>
         [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Justification = "Calling override method")]
-        public bool Equals(Currency other)
+        public bool Equals(CurrencyInfo other)
         {
             IfDefaultThenInitializeToNoCurrency();
             return _code == other._code

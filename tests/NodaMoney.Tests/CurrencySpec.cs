@@ -16,7 +16,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenAskingForIt_ThenAllCurrenciesShouldBeReturned()
         {
-            var currencies = Currency.GetAllCurrencies();
+            var currencies = CurrencyInfo.GetAllCurrencies();
 
             currencies.Should().NotBeEmpty();
             currencies.Should().HaveCountGreaterThan(100);
@@ -95,7 +95,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenIsoCodeIsExisting_ThenCreatingShouldSucceed()
         {
-            var currency = Currency.FromCode("EUR");
+            var currency = CurrencyInfo.FromCode("EUR");
 
             currency.Should().NotBeNull();
             currency.Symbol.Should().Be("€");
@@ -107,7 +107,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenIsoCodeIsUnknown_ThenCreatingShouldThrow()
         {
-            Action action = () => Currency.FromCode("AAA");
+            Action action = () => CurrencyInfo.FromCode("AAA");
 
             action.Should().Throw<InvalidCurrencyException>();
         }
@@ -115,7 +115,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenIsoCodeIsNull_ThenCreatingShouldThrow()
         {
-            Action action = () => Currency.FromCode(null);
+            Action action = () => CurrencyInfo.FromCode(null);
 
             action.Should().Throw<ArgumentNullException>();
         }
@@ -123,7 +123,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenEstionianKrone_ThenItShouldBeObsolete()
         {
-            var currency = Currency.FromCode("EEK");
+            var currency = CurrencyInfo.FromCode("EEK");
 
             currency.Should().NotBeNull();
             currency.Symbol.Should().Be("kr");
@@ -136,7 +136,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenUsingRegionInfo_ThenCreatingShouldSucceed()
         {
-            var currency = Currency.FromRegion(new RegionInfo("NL"));
+            var currency = CurrencyInfo.FromRegion(new RegionInfo("NL"));
 
             currency.Should().NotBeNull();
             currency.Symbol.Should().Be("€");
@@ -147,7 +147,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenRegionInfoIsNull_ThenCreatingShouldThrow()
         {
-            Action action = () => Currency.FromRegion((RegionInfo)null);
+            Action action = () => CurrencyInfo.FromRegion((RegionInfo)null);
 
             action.Should().Throw<ArgumentNullException>();
         }
@@ -155,7 +155,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenUsingRegionName_ThenCreatingShouldSucceed()
         {
-            var currency = Currency.FromRegion("NL");
+            var currency = CurrencyInfo.FromRegion("NL");
 
             currency.Should().NotBeNull();
             currency.Symbol.Should().Be("€");
@@ -166,7 +166,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenUsingRegionNameThatIsNull_ThenCreatingShouldThrow()
         {
-            Action action = () => Currency.FromRegion((string)null);
+            Action action = () => CurrencyInfo.FromRegion((string)null);
 
             action.Should().Throw<ArgumentNullException>();
         }
@@ -174,7 +174,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenUsingCultureInfo_ThenCreatingShouldSucceed()
         {
-            var currency = Currency.FromCulture(CultureInfo.CreateSpecificCulture("nl-NL"));
+            var currency = CurrencyInfo.FromCulture(CultureInfo.CreateSpecificCulture("nl-NL"));
 
             currency.Should().NotBeNull();
             currency.Symbol.Should().Be("€");
@@ -185,7 +185,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenCultureInfoIsNull_ThenCreatingShouldThrow()
         {
-            Action action = () => Currency.FromCulture(null);
+            Action action = () => CurrencyInfo.FromCulture(null);
 
             action.Should().Throw<ArgumentNullException>();
         }
@@ -193,7 +193,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenCultureInfoIsNeutralCulture_ThenCreatingShouldThrow()
         {
-            Action action = () => Currency.FromCulture(new CultureInfo("en"));
+            Action action = () => CurrencyInfo.FromCulture(new CultureInfo("en"));
 
             action.Should().Throw<ArgumentException>();
         }
@@ -201,7 +201,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenUsingCultureName_ThenCreatingShouldSucceed()
         {
-            var currency = Currency.FromRegion("nl-NL");
+            var currency = CurrencyInfo.FromRegion("nl-NL");
 
             currency.Should().NotBeNull();
             currency.Symbol.Should().Be("€");
@@ -217,37 +217,37 @@ namespace NodaMoney.Tests.CurrencySpec
         [UseCulture("en-US")]
         public void WhenCurrentCultureIsUS_ThenCurrencyIsDollar()
         {
-            var currency = Currency.CurrentCurrency;
+            var currency = CurrencyInfo.CurrentCurrency;
 
-            currency.Should().Be(Currency.FromCode("USD"));
+            currency.Should().Be(CurrencyInfo.FromCode("USD"));
         }
 
         [Fact]
         [UseCulture("nl-NL")]
         public void WhenCurrentCultureIsNL_ThenCurrencyIsEuro()
         {
-            var currency = Currency.CurrentCurrency;
+            var currency = CurrencyInfo.CurrentCurrency;
 
-            currency.Should().Be(Currency.FromCode("EUR"));
+            currency.Should().Be(CurrencyInfo.FromCode("EUR"));
         }
 
         [Fact]
         [UseCulture(null)]
         public void WhenCurrentCultureIsInvariant_ThenCurrencyIsDefault()
         {
-            var currency = Currency.CurrentCurrency;
+            var currency = CurrencyInfo.CurrentCurrency;
 
-            currency.Should().Be(default(Currency));
+            currency.Should().Be(default(CurrencyInfo));
         }
     }
 
     public class GivenIWantToCompareCurrencies
     {
-        private Currency _euro1 = Currency.FromCode("EUR");
+        private CurrencyInfo _euro1 = CurrencyInfo.FromCode("EUR");
 
-        private Currency _euro2 = Currency.FromCode("EUR");
+        private CurrencyInfo _euro2 = CurrencyInfo.FromCode("EUR");
 
-        private Currency _dollar = Currency.FromCode("USD");
+        private CurrencyInfo _dollar = CurrencyInfo.FromCode("USD");
 
         [Fact]
         public void WhenComparingEquality_ThenCurrencyShouldBeEqual()
@@ -263,8 +263,8 @@ namespace NodaMoney.Tests.CurrencySpec
         public void WhenComparingStaticEquality_ThenCurrencyShouldBeEqual()
         {
             // Compare using static Equal()
-            Currency.Equals(_euro1, _euro2).Should().BeTrue();
-            Currency.Equals(_euro1, _dollar).Should().BeFalse();
+            CurrencyInfo.Equals(_euro1, _euro2).Should().BeTrue();
+            CurrencyInfo.Equals(_euro1, _dollar).Should().BeFalse();
         }
 
         [Fact]
@@ -286,15 +286,15 @@ namespace NodaMoney.Tests.CurrencySpec
 
     public class GivenIWantToKnowSmallestPossibleAmountOfCurrency
     {
-        private Currency _eur = Currency.FromCode("EUR");
+        private CurrencyInfo _eur = CurrencyInfo.FromCode("EUR");
 
-        private Currency _yen = Currency.FromCode("JPY");
+        private CurrencyInfo _yen = CurrencyInfo.FromCode("JPY");
 
-        private Currency _din = Currency.FromCode("BHD");
+        private CurrencyInfo _din = CurrencyInfo.FromCode("BHD");
 
-        private Currency _mga = Currency.FromCode("MGA"); // Malagasy ariary
+        private CurrencyInfo _mga = CurrencyInfo.FromCode("MGA"); // Malagasy ariary
 
-        private Currency _xau = Currency.FromCode("XAU"); // Gold            
+        private CurrencyInfo _xau = CurrencyInfo.FromCode("XAU"); // Gold            
 
         [Fact]
         public void WhenEuro_ThenShouldBeDividedBy100()
@@ -348,7 +348,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenParamsAreCorrect_ThenCreatingShouldSucceed()
         {
-            var eur = new Currency("EUR", 978, 2, "Euro", "€");
+            var eur = new CurrencyInfo("EUR", 978, 2, "Euro", "€");
 
             eur.Code.Should().Be("EUR");
             eur.Number.Should().Be(978);
@@ -360,7 +360,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenCodeIsNull_ThenCreatingShouldThrow()
         {
-            Action action = () => { var eur = new Currency(null, 978, 2, "Euro", "€"); };
+            Action action = () => { var eur = new CurrencyInfo(null, 978, 2, "Euro", "€"); };
 
             action.Should().Throw<ArgumentException>();
         }
@@ -372,7 +372,7 @@ namespace NodaMoney.Tests.CurrencySpec
 
             //eur.Number.Should().Be(string.Empty);
 
-            var eur = new Currency("EUR", 0, 2, "Euro", "€");
+            var eur = new CurrencyInfo("EUR", 0, 2, "Euro", "€");
 
             eur.Number.Should().Be(0);
         }
@@ -380,7 +380,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenEnglishNameIsNull_ThenEnglishNameShouldDefaultToEmpty()
         {
-            var eur = new Currency("EUR", 978, 2, null, "€");
+            var eur = new CurrencyInfo("EUR", 978, 2, null, "€");
 
             eur.EnglishName.Should().Be(string.Empty);
         }
@@ -388,9 +388,9 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenSignIsNull_ThenSignShouldDefaultToGenericCurrencySign()
         {
-            var eur = new Currency("EUR", 978, 2, "Euro", null);
+            var eur = new CurrencyInfo("EUR", 978, 2, "Euro", null);
 
-            eur.Symbol.Should().Be(Currency.GenericCurrencySign);
+            eur.Symbol.Should().Be(CurrencyInfo.GenericCurrencySign);
         }
 
         [Fact]
@@ -404,9 +404,9 @@ namespace NodaMoney.Tests.CurrencySpec
 
     public class GivenIWantToSerializeCurrencyWitXmlSerializer
     {
-        private Currency yen = Currency.FromCode("JPY");
+        private CurrencyInfo yen = CurrencyInfo.FromCode("JPY");
 
-        private Currency euro = Currency.FromCode("EUR");
+        private CurrencyInfo euro = CurrencyInfo.FromCode("EUR");
 
         [Fact]
         public void WhenSerializingYen_ThenThisShouldSucceed()
@@ -414,7 +414,7 @@ namespace NodaMoney.Tests.CurrencySpec
             //Console.WriteLine(StreamToString(Serialize(yen)));
             StreamToString(Serialize(yen));
 
-            yen.Should().Be(Clone<Currency>(yen));
+            yen.Should().Be(Clone<CurrencyInfo>(yen));
         }
 
         [Fact]
@@ -423,7 +423,7 @@ namespace NodaMoney.Tests.CurrencySpec
             //Console.WriteLine(StreamToString(Serialize(euro)));
             StreamToString(Serialize(euro));
 
-            euro.Should().Be(Clone<Currency>(euro));
+            euro.Should().Be(Clone<CurrencyInfo>(euro));
         }
 
         public static Stream Serialize(object source)
@@ -461,7 +461,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenDeConstructing_ThenShouldSucceed()
         {
-            var currency = Currency.FromCode("EUR");
+            var currency = CurrencyInfo.FromCode("EUR");
 
             var (code, number, symbol) = currency;
 
@@ -476,7 +476,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenValidatingACurrencyThatIsAlwaysValid_ThenShouldSucceed()
         {
-            var currency = Currency.FromCode("EUR");
+            var currency = CurrencyInfo.FromCode("EUR");
 
             currency.ValidFrom.Should().BeNull();
             currency.ValidTo.Should().BeNull();
@@ -487,7 +487,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenValidatingACurrencyThatIsValidUntilACertainDate_ThenShouldBeValidStrictlyBeforeThatDate()
         {
-            var currency = Currency.FromCode("VEB");
+            var currency = CurrencyInfo.FromCode("VEB");
 
             currency.ValidFrom.Should().BeNull();
             currency.ValidTo.Should().Be(new DateTime(2008, 1, 1));
@@ -505,7 +505,7 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenValidatingACurrencyThatIsValidFromACertainDate_ThenShouldBeValidFromThatDate()
         {
-            var currency = Currency.FromCode("VES");
+            var currency = CurrencyInfo.FromCode("VES");
 
             currency.ValidFrom.Should().Be(new DateTime(2018, 8, 20));
             currency.ValidTo.Should().BeNull();
@@ -522,9 +522,9 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenCreatingDefault_ThenItShouldBeNoCurrency()
         {
-            var NoCurrency = Currency.FromCode("XXX");
+            var NoCurrency = CurrencyInfo.FromCode("XXX");
 
-            Currency currency = default;
+            CurrencyInfo currency = default;
 
             currency.Should().NotBeNull();
             currency.Should().Be(NoCurrency);
@@ -537,10 +537,10 @@ namespace NodaMoney.Tests.CurrencySpec
         [Fact]
         public void WhenNoCurrency_ThenItShouldBeEqualToDefault()
         {
-            Currency noCurrency = Currency.FromCode("XXX");
+            CurrencyInfo noCurrency = CurrencyInfo.FromCode("XXX");
 
             noCurrency.Should().NotBeNull();
-            noCurrency.Should().Be(default(Currency));
+            noCurrency.Should().Be(default(CurrencyInfo));
         }
     }
 }

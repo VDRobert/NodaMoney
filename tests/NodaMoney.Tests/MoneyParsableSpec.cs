@@ -122,7 +122,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         [Fact, UseCulture("nl-NL")]
         public void WhenParsingYenInNetherlands_ThenThisShouldSucceed()
         {
-            var yen = Money.Parse("¥ 765", Currency.FromCode("JPY"));
+            var yen = Money.Parse("¥ 765", CurrencyInfo.FromCode("JPY"));
 
             yen.Should().Be(new Money(765, "JPY"));
         }
@@ -130,7 +130,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         [Fact, UseCulture("en-US")]
         public void WhenParsingArgentinePesoInUSA_ThenThisShouldReturnArgentinePeso()
         {
-            var peso = Money.Parse("$765.43", Currency.FromCode("ARS"));
+            var peso = Money.Parse("$765.43", CurrencyInfo.FromCode("ARS"));
 
             peso.Should().Be(new Money(765.43m, "ARS"));
         }
@@ -138,7 +138,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         [Fact, UseCulture("es-AR")]
         public void WhenParsingUSDollarSymbolInArgentina_ThenThisShouldReturnUSDollar()
         {
-            var dollar = Money.Parse("$765,43", Currency.FromCode("USD"));
+            var dollar = Money.Parse("$765,43", CurrencyInfo.FromCode("USD"));
 
             dollar.Should().Be(new Money(765.43m, "USD"));
         }
@@ -147,7 +147,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         public void WhenParsingUSDollarInNetherlands_ThenThisShouldSucceed()
         {
             // $ symbol is used for multiple currencies
-            var dollar = Money.Parse("$765,43", Currency.FromCode("USD"));
+            var dollar = Money.Parse("$765,43", CurrencyInfo.FromCode("USD"));
 
             dollar.Should().Be(new Money(765.43m, "USD"));
         }
@@ -155,7 +155,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         [Fact, UseCulture("nl-BE")]
         public void WhenInBelgiumDutchSpeaking_ThenThisShouldSucceed()
         {
-            var euro = Money.Parse("€ 765,43", Currency.FromCode("EUR"));
+            var euro = Money.Parse("€ 765,43", CurrencyInfo.FromCode("EUR"));
 
             euro.Should().Be(new Money(765.43m, "EUR"));
         }
@@ -163,7 +163,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         [Fact, UseCulture("fr-BE")]
         public void WhenInBelgiumFrenchSpeaking_ThenThisShouldSucceed()
         {
-            var euro = Money.Parse("765,43 €", Currency.FromCode("EUR"));
+            var euro = Money.Parse("765,43 €", CurrencyInfo.FromCode("EUR"));
 
             euro.Should().Be(new Money(765.43, "EUR"));
         }
@@ -171,7 +171,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         [Fact, UseCulture("nl-NL")]
         public void WhenParsingNumberWithoutCurrency_ThenThisShouldSucceed()
         {
-            var euro = Money.Parse("765,43", Currency.FromCode("USD"));
+            var euro = Money.Parse("765,43", CurrencyInfo.FromCode("USD"));
 
             euro.Should().Be(new Money(765.43, "USD"));
         }
@@ -179,7 +179,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         [Fact, UseCulture("nl-NL")]
         public void WhenParsingUSDollarWithEuroCurrency_ThenThisShouldFail()
         {
-            Action action = () => Money.Parse("€ 765,43", Currency.FromCode("USD"));
+            Action action = () => Money.Parse("€ 765,43", CurrencyInfo.FromCode("USD"));
 
             action.Should().Throw<FormatException>(); //.WithMessage("Input string was not in a correct format.");                
         }
@@ -187,7 +187,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         [Fact, UseCulture("nl-NL")]
         public void WhenValueIsNull_ThenThowExeception()
         {
-            Action action = () => Money.Parse(null, Currency.FromCode("EUR"));
+            Action action = () => Money.Parse(null, CurrencyInfo.FromCode("EUR"));
 
             action.Should().Throw<ArgumentNullException>();
         }
@@ -195,7 +195,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         [Fact, UseCulture("nl-NL")]
         public void WhenValueIsEmpty_ThenThowExeception()
         {
-            Action action = () => Money.Parse("", Currency.FromCode("EUR"));
+            Action action = () => Money.Parse("", CurrencyInfo.FromCode("EUR"));
 
             action.Should().Throw<ArgumentNullException>();
         }
@@ -203,7 +203,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         [Fact, UseCulture("nl-NL")]
         public void WhenValueIsNullWithOverrideMethod_ThenThowExeception()
         {
-            Action action = () => Money.Parse(null, NumberStyles.Currency, null, Currency.FromCode("EUR"));
+            Action action = () => Money.Parse(null, NumberStyles.Currency, null, CurrencyInfo.FromCode("EUR"));
 
             action.Should().Throw<ArgumentNullException>();
         }
@@ -211,7 +211,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         [Fact, UseCulture("nl-NL")]
         public void WhenValueIsEmptyWithOverrideMethod_ThenThowExeception()
         {
-            Action action = () => Money.Parse("", NumberStyles.Currency, null, Currency.FromCode("EUR"));
+            Action action = () => Money.Parse("", NumberStyles.Currency, null, CurrencyInfo.FromCode("EUR"));
 
             action.Should().Throw<ArgumentNullException>();
         }
@@ -350,7 +350,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
             Money money;
             Money.TryParse("¥ 765", out money).Should().BeFalse();
 
-            money.Should().Be(new Money(0m, Currency.FromCode("XXX")));
+            money.Should().Be(new Money(0m, CurrencyInfo.FromCode("XXX")));
         }
 
         [Fact, UseCulture("en-US")]
@@ -378,7 +378,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
             Money money;
             Money.TryParse("$ 765,43", out money).Should().BeFalse();
 
-            money.Should().Be(new Money(0m, Currency.FromCode("XXX")));
+            money.Should().Be(new Money(0m, CurrencyInfo.FromCode("XXX")));
         }
 
         [Fact, UseCulture("nl-NL")]
@@ -387,7 +387,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
             Money money;
             Money.TryParse(null, out money).Should().BeFalse();
 
-            money.Should().Be(new Money(0m, Currency.FromCode("XXX")));
+            money.Should().Be(new Money(0m, CurrencyInfo.FromCode("XXX")));
         }
 
         [Fact, UseCulture("nl-NL")]
@@ -396,7 +396,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
             Money money;
             Money.TryParse("", out money).Should().BeFalse();
 
-            money.Should().Be(new Money(0m, Currency.FromCode("XXX")));
+            money.Should().Be(new Money(0m, CurrencyInfo.FromCode("XXX")));
         }
     }
 
@@ -407,7 +407,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         public void WhenParsingYenInNetherlands_ThenThisShouldSucceed()
         {
             Money yen;
-            Money.TryParse("¥ 765", Currency.FromCode("JPY"), out yen).Should().BeTrue();
+            Money.TryParse("¥ 765", CurrencyInfo.FromCode("JPY"), out yen).Should().BeTrue();
 
             yen.Should().Be(new Money(765, "JPY"));
         }
@@ -416,7 +416,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         public void WhenParsingArgentinePesoInUSA_ThenThisShouldReturnArgentinePeso()
         {
             Money peso;
-            Money.TryParse("$765.43", Currency.FromCode("ARS"), out peso).Should().BeTrue();
+            Money.TryParse("$765.43", CurrencyInfo.FromCode("ARS"), out peso).Should().BeTrue();
 
             peso.Should().Be(new Money(765.43m, "ARS"));
         }
@@ -425,7 +425,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         public void WhenParsingUSDollarSymbolInArgentina_ThenThisShouldReturnUSDollar()
         {
             Money dollar;
-            Money.TryParse("$765,43", Currency.FromCode("USD"), out dollar).Should().BeTrue();
+            Money.TryParse("$765,43", CurrencyInfo.FromCode("USD"), out dollar).Should().BeTrue();
 
             dollar.Should().Be(new Money(765.43m, "USD"));
         }
@@ -435,7 +435,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         {
             // $ symbol is used for multiple currencies
             Money dollar;
-            Money.TryParse("$765,43", Currency.FromCode("USD"), out dollar).Should().BeTrue();
+            Money.TryParse("$765,43", CurrencyInfo.FromCode("USD"), out dollar).Should().BeTrue();
 
             dollar.Should().Be(new Money(765.43m, "USD"));
         }
@@ -444,7 +444,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         public void WhenInBelgiumDutchSpeaking_ThenThisShouldSucceed()
         {
             Money euro;
-            Money.TryParse("€ 765,43", Currency.FromCode("EUR"), out euro).Should().BeTrue();
+            Money.TryParse("€ 765,43", CurrencyInfo.FromCode("EUR"), out euro).Should().BeTrue();
 
             euro.Should().Be(new Money(765.43m, "EUR"));
         }
@@ -453,7 +453,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         public void WhenInBelgiumFrenchSpeaking_ThenThisShouldSucceed()
         {
             Money euro;
-            Money.TryParse("765,43 €", Currency.FromCode("EUR"), out euro).Should().BeTrue();
+            Money.TryParse("765,43 €", CurrencyInfo.FromCode("EUR"), out euro).Should().BeTrue();
 
             euro.Should().Be(new Money(765.43, "EUR"));
         }
@@ -462,7 +462,7 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         public void WhenParsingNumberWithoutCurrency_ThenThisShouldSucceed()
         {
             Money euro;
-            Money.TryParse("765,43", Currency.FromCode("USD"), out euro).Should().BeTrue();
+            Money.TryParse("765,43", CurrencyInfo.FromCode("USD"), out euro).Should().BeTrue();
 
             euro.Should().Be(new Money(765.43, "USD"));
         }
@@ -471,9 +471,9 @@ namespace NodaMoney.Tests.MoneyParsableSpec
         public void WhenParsingUSDollarWithEuroCurrency_ThenThisShouldReturnFalse()
         {
             Money money;
-            Money.TryParse("€ 765,43", Currency.FromCode("USD"), out money).Should().BeFalse();
+            Money.TryParse("€ 765,43", CurrencyInfo.FromCode("USD"), out money).Should().BeFalse();
 
-            money.Should().Be(new Money(0m, Currency.FromCode("XXX")));
+            money.Should().Be(new Money(0m, CurrencyInfo.FromCode("XXX")));
         }
     }
 }

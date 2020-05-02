@@ -14,12 +14,12 @@ namespace NodaMoney.Tests
         public void ExecuteBenchmark()
         {
             var initializingCurrencyReport = BenchmarkRunner.Run<InitializingCurrencyBenchmarks>();
-            //var initializingMoneyReport = BenchmarkRunner.Run<InitializingMoneyBenchmarks>();
-            //var moneyOperationsReport = BenchmarkRunner.Run<MoneyOperationsBenchmarks>();
-            //var moneyFormattingReport = BenchmarkRunner.Run<MoneyFormattingBenchmarks>();
-            //var moneyParsingReport = BenchmarkRunner.Run<MoneyParsingBenchmarks>();
-            //var addingCustomCurrencyReport = BenchmarkRunner.Run<AddingCustomCurrencyBenchmarks>();
-            //var highLoadBenchReport = BenchmarkRunner.Run<HighLoadBenchmarks>();
+            var initializingMoneyReport = BenchmarkRunner.Run<InitializingMoneyBenchmarks>();
+            var moneyOperationsReport = BenchmarkRunner.Run<MoneyOperationsBenchmarks>();
+            var moneyFormattingReport = BenchmarkRunner.Run<MoneyFormattingBenchmarks>();
+            var moneyParsingReport = BenchmarkRunner.Run<MoneyParsingBenchmarks>();
+            var addingCustomCurrencyReport = BenchmarkRunner.Run<AddingCustomCurrencyBenchmarks>();
+            var highLoadBenchReport = BenchmarkRunner.Run<HighLoadBenchmarks>();
         }
     }
 
@@ -30,20 +30,20 @@ namespace NodaMoney.Tests
         [Benchmark]
         public void FromCode()
         {
-            Currency currency = Currency.FromCode("EUR");
+            CurrencyInfo currency = CurrencyInfo.FromCode("EUR");
         }
 
         [Benchmark]
         public void FromCodeBeRef()
         {
-            ref Currency currency = ref Currency.FromCode("EUR");
+            ref CurrencyInfo currency = ref CurrencyInfo.FromCode("EUR");
         }
     }
 
     [MemoryDiagnoser]
     public class InitializingMoneyBenchmarks
     {
-        private readonly Currency _euro = Currency.FromCode("EUR");
+        private readonly CurrencyInfo _euro = CurrencyInfo.FromCode("EUR");
         private readonly Money _money = new Money(10m, "EUR");
 
         [Benchmark(Baseline = true)]
@@ -61,7 +61,7 @@ namespace NodaMoney.Tests
         [Benchmark]
         public void ExplicitCurrencyFromCode()
         {
-            var euros = new Money(6.54m, Currency.FromCode("EUR"));
+            var euros = new Money(6.54m, CurrencyInfo.FromCode("EUR"));
         }
 
         [Benchmark]
@@ -189,13 +189,13 @@ namespace NodaMoney.Tests
         [Benchmark]
         public void Explicit()
         {
-            var euro = Money.Parse("€ 765,43", Currency.FromCode("EUR"));  // or € 765.43
+            var euro = Money.Parse("€ 765,43", CurrencyInfo.FromCode("EUR"));  // or € 765.43
         }
 
         [Benchmark]
         public void ExplicitTry()
         {
-            Money.TryParse("€ 765,43", Currency.FromCode("EUR"), out Money euro);
+            Money.TryParse("€ 765,43", CurrencyInfo.FromCode("EUR"), out Money euro);
         }
     }
 
@@ -243,7 +243,7 @@ namespace NodaMoney.Tests
         // [Benchmark]
         public void Replace()
         {
-            Currency oldEuro = CurrencyBuilder.Unregister("EUR", "ISO-4217");
+            CurrencyInfo oldEuro = CurrencyBuilder.Unregister("EUR", "ISO-4217");
 
             var builder = new CurrencyBuilder("EUR", "ISO-4217");
             builder.LoadDataFromCurrency(oldEuro);
@@ -260,16 +260,16 @@ namespace NodaMoney.Tests
         public void CreatingOneMillionCurrency()
         {
             int max = 1_000_000;
-            Currency[] currencies = new Currency[max];
+            CurrencyInfo[] currencies = new CurrencyInfo[max];
 
             for (int i = 0; i < max; i++)
             {
                 if (i % 3 == 0)
-                    currencies[i] = Currency.FromCode("EUR");
+                    currencies[i] = CurrencyInfo.FromCode("EUR");
                 else if (i % 2 == 0)
-                    currencies[i] = Currency.FromCode("USD");
+                    currencies[i] = CurrencyInfo.FromCode("USD");
                 else
-                    currencies[i] = Currency.FromCode("JPY");
+                    currencies[i] = CurrencyInfo.FromCode("JPY");
             }
         }
 

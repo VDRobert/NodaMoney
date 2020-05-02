@@ -8,11 +8,11 @@ namespace NodaMoney.Tests.ExchangeRateSpec
 {
     public class GivenIWantToConvertMoney
     {
-        private readonly Currency _euro = Currency.FromCode("EUR");
+        private readonly CurrencyInfo _euro = CurrencyInfo.FromCode("EUR");
 
-        private readonly Currency _dollar = Currency.FromCode("USD");
+        private readonly CurrencyInfo _dollar = CurrencyInfo.FromCode("USD");
 
-        private ExchangeRate _exchangeRate = new ExchangeRate(Currency.FromCode("EUR"), Currency.FromCode("USD"), 1.2591);
+        private ExchangeRate _exchangeRate = new ExchangeRate(CurrencyInfo.FromCode("EUR"), CurrencyInfo.FromCode("USD"), 1.2591);
                              // EUR/USD 1.2591
 
         [Fact]
@@ -53,9 +53,9 @@ namespace NodaMoney.Tests.ExchangeRateSpec
 
     public class GivenIWantToCreateAnExchangeRateWithCurrencies
     {
-        private readonly Currency _euro = Currency.FromCode("EUR");
+        private readonly CurrencyInfo _euro = CurrencyInfo.FromCode("EUR");
 
-        private readonly Currency _dollar = Currency.FromCode("USD");
+        private readonly CurrencyInfo _dollar = CurrencyInfo.FromCode("USD");
 
         [Fact]
         public void WhenRateIsDoubleAndNoNumberRoundingDecimalsIsGiven_ThenCreatingShouldSucceedWithValueRoundedToSixDecimals()
@@ -132,7 +132,7 @@ namespace NodaMoney.Tests.ExchangeRateSpec
         {
             var fx = new ExchangeRate(default, _dollar, 1.2591M);
 
-            fx.BaseCurrency.Should().Be(default(Currency));
+            fx.BaseCurrency.Should().Be(default(CurrencyInfo));
             fx.QuoteCurrency.Should().Be(_dollar);
             fx.Value.Should().Be(1.2591M);
         }
@@ -143,7 +143,7 @@ namespace NodaMoney.Tests.ExchangeRateSpec
             var fx = new ExchangeRate(_euro, default, 1.2591M);
 
             fx.BaseCurrency.Should().Be(_euro);
-            fx.QuoteCurrency.Should().Be(default(Currency));
+            fx.QuoteCurrency.Should().Be(default(CurrencyInfo));
             fx.Value.Should().Be(1.2591M);
         }
     }
@@ -154,9 +154,9 @@ namespace NodaMoney.Tests.ExchangeRateSpec
 
         private readonly string _dollarAsString = "USD";
 
-        private readonly Currency _euro = Currency.FromCode("EUR");
+        private readonly CurrencyInfo _euro = CurrencyInfo.FromCode("EUR");
 
-        private readonly Currency _dollar = Currency.FromCode("USD");
+        private readonly CurrencyInfo _dollar = CurrencyInfo.FromCode("USD");
 
         [Fact]
         public void WhenRateIsDoubleAndNoNumberRoundingDecimalsIsGiven_ThenCreatingShouldSucceedWithValueRoundedToSixDecimals()
@@ -222,7 +222,7 @@ namespace NodaMoney.Tests.ExchangeRateSpec
     [Collection(nameof(NoParallelization))]
     public class GivenIWantToConvertExchangeRateToString
     {
-        ExchangeRate fx = new ExchangeRate(Currency.FromCode("EUR"), Currency.FromCode("USD"), 1.2524);
+        ExchangeRate fx = new ExchangeRate(CurrencyInfo.FromCode("EUR"), CurrencyInfo.FromCode("USD"), 1.2524);
 
         [Fact, UseCulture("en-US")]
         public void WhenShowingExchangeRateInAmerica_ThenReturnCurrencyPairWithDot()
@@ -441,13 +441,13 @@ namespace NodaMoney.Tests.ExchangeRateSpec
         [Fact]
         public void WhenDeconstruct_ThenShouldSucceed()
         {
-            var fx = new ExchangeRate(Currency.FromCode("EUR"), Currency.FromCode("USD"), 1.2591m);
+            var fx = new ExchangeRate(CurrencyInfo.FromCode("EUR"), CurrencyInfo.FromCode("USD"), 1.2591m);
 
             var (baseCurrency, quoteCurrency, rate) = fx;
 
             rate.Should().Be(1.2591m);
-            baseCurrency.Should().Be(Currency.FromCode("EUR"));
-            quoteCurrency.Should().Be(Currency.FromCode("USD"));
+            baseCurrency.Should().Be(CurrencyInfo.FromCode("EUR"));
+            quoteCurrency.Should().Be(CurrencyInfo.FromCode("USD"));
         }
     }
 }

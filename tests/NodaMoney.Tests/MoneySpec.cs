@@ -18,7 +18,7 @@ namespace NodaMoney.Tests.MoneySpec
         {            
             var money = new Money(_decimalValue);
 
-            money.Currency.Should().Be(Currency.FromCode("USD"));
+            money.Currency.Should().Be(CurrencyInfo.FromCode("USD"));
             money.Amount.Should().Be(1234.57m);
         }
 
@@ -28,7 +28,7 @@ namespace NodaMoney.Tests.MoneySpec
         {
             var money = new Money(_decimalValue);
 
-            money.Currency.Should().Be(Currency.FromCode("EUR"));
+            money.Currency.Should().Be(CurrencyInfo.FromCode("EUR"));
             money.Amount.Should().Be(1234.57m);
         }
 
@@ -38,7 +38,7 @@ namespace NodaMoney.Tests.MoneySpec
         {
             var money = new Money(_decimalValue);
 
-            money.Currency.Should().Be(Currency.FromCode("JPY"));
+            money.Currency.Should().Be(CurrencyInfo.FromCode("JPY"));
             money.Amount.Should().Be(1235m);
         }
 
@@ -48,14 +48,14 @@ namespace NodaMoney.Tests.MoneySpec
         {
             var money = new Money(_decimalValue);
 
-            money.Currency.Should().Be(default(Currency));
+            money.Currency.Should().Be(default(CurrencyInfo));
             money.Amount.Should().Be(1235m);
         }
     }
 
     public class GivenIWantMoneyFromNumericTypeAndAnExplicitCurrencyObject
     {
-        private readonly Currency _euro = Currency.FromCode("EUR");
+        private readonly CurrencyInfo _euro = CurrencyInfo.FromCode("EUR");
 
         [Fact]
         public void WhenValueIsByte_ThenCreatingShouldSucceed()
@@ -175,7 +175,7 @@ namespace NodaMoney.Tests.MoneySpec
 
     public class GivenIWantMoneyFromNumericTypeAndAnExplicitIsoCurrencyCode
     {
-        private readonly Currency _euro = Currency.FromCode("EUR");
+        private readonly CurrencyInfo _euro = CurrencyInfo.FromCode("EUR");
 
         [Fact]
         public void WhenValueIsByte_ThenCreatingShouldSucceed()
@@ -395,7 +395,7 @@ namespace NodaMoney.Tests.MoneySpec
             var (amount, currency) = money;
 
             amount.Should().Be(10m);
-            currency.Should().Be(Currency.FromCode("EUR"));
+            currency.Should().Be(CurrencyInfo.FromCode("EUR"));
         }
     }
 
@@ -407,7 +407,7 @@ namespace NodaMoney.Tests.MoneySpec
             Money money = default;
 
             money.Should().NotBeNull();
-            money.Currency.Should().Be(default(Currency));
+            money.Currency.Should().Be(default(CurrencyInfo));
             money.Amount.Should().Be(default(decimal));
         }
     }

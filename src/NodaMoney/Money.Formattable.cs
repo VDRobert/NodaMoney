@@ -42,7 +42,7 @@ namespace NodaMoney
             return ConvertToString(format, formatProvider);
         }
 
-        private static IFormatProvider GetFormatProvider(Currency currency, IFormatProvider formatProvider, bool useCode = false)
+        private static IFormatProvider GetFormatProvider(CurrencyInfo currency, IFormatProvider formatProvider, bool useCode = false)
         {
             CultureInfo cc = CultureInfo.CurrentCulture;
 
