@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using System.Threading;
 
 using FluentAssertions;
@@ -205,6 +207,34 @@ namespace NodaMoney.Tests.MoneyConvertibleSpec
 
             money.Currency.Should().Be(_currentCurrency);
             money.Amount.Should().Be(25.00m);
+        }
+
+        [Fact]
+        public void WhenNoDefaultCurrencyIsSet_MixingCurrenciesShallThrow()
+        {
+            Money money = 25.00m;
+            Money usd = new Money(25.00m, Currency.FromCode("USD"));
+            Money result;
+            Action invalidAction = () => result = money + usd;
+
+            invalidAction.ShouldThrow<Exception>();
+
+        }
+
+        [Fact]
+        public void WhenDefaultCurrencyIsSet_SameCurrencyShallNotThrow()
+        {
+            Currency.DefaultRegionInfo = Equals(RegionInfo.CurrentRegion, new RegionInfo("FR-fr")) ? new RegionInfo("SV-sv") : new RegionInfo("FR-fr");
+
+            Money money = 25.00m;
+            Money usd = new Money(25.00m, Currency.FromCode(Currency.DefaultRegionInfo.ISOCurrencySymbol));
+
+            Money result;
+            Action invalidAction = () => result = money + usd;
+
+            invalidAction.ShouldNotThrow();
+            Currency.DefaultRegionInfo.Should().NotBe(RegionInfo.CurrentRegion);
+
         }
     }
 }

@@ -370,6 +370,23 @@ namespace NodaMoney.Tests.CurrencySpec
 
             action.ShouldThrow<ArgumentOutOfRangeException>();
         }
+
+
+        [Fact]
+        public void WhenDefaultIsSetItShouldBeUSed()
+        {
+            var defaultRegionInfo = new RegionInfo("FR-fr");
+            Currency.DefaultRegionInfo = defaultRegionInfo;
+            Currency.CurrentCurrency.Code.Should().Be(defaultRegionInfo.ISOCurrencySymbol);
+            //RESET to ensure that following tests work
+            Currency.DefaultRegionInfo = null;
+        }
+
+        [Fact]
+        public void WhenNoDefaultIsSetCurrentRegionShouldBeUsed()
+        {
+            Currency.CurrentCurrency.Code.Should().Be(RegionInfo.CurrentRegion.ISOCurrencySymbol);
+        }
     }
 
     public class GivenIWantToSerializeCurrencyWitXmlSerializer
