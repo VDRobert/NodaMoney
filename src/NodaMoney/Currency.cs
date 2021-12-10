@@ -19,6 +19,9 @@ namespace NodaMoney
     [DebuggerDisplay("{Code}")]
     public struct Currency : IEquatable<Currency>, IXmlSerializable
     {
+        private static readonly object Semaphore = new object();
+        private static RegionInfo _defaultRegionInfo;
+
         /// <summary>A singleton instance of the currencies registry.</summary>
         internal static readonly CurrencyRegistry Registry = new CurrencyRegistry();
 
@@ -72,7 +75,7 @@ namespace NodaMoney
 
         /// <summary>Gets the Currency that represents the country/region used by the current thread.</summary>
         /// <value>The Currency that represents the country/region used by the current thread.</value>
-        public static Currency CurrentCurrency => FromRegion(RegionInfo.CurrentRegion);
+        public static Currency CurrentCurrency => DefaultRegionInfo != null ? FromRegion(DefaultRegionInfo) : FromRegion(RegionInfo.CurrentRegion);
 
         /// <summary>Gets the currency sign (¤), a character used to denote an unspecified currency.</summary>
         /// <remarks>https://en.wikipedia.org/wiki/Currency_sign_(typography) </remarks>
@@ -139,6 +142,28 @@ namespace NodaMoney
         /// <summary>Gets a value indicating whether currency is obsolete.</summary>
         /// <value><c>true</c> if this instance is obsolete; otherwise, <c>false</c>.</value>
         public bool IsObsolete => ValidTo.HasValue && ValidTo.Value < DateTime.Today;
+
+        /// <summary>
+        /// Use with CARE. Only to be used when you need to mix Currency with other non matching region info.
+        /// </summary>
+        public static RegionInfo DefaultRegionInfo
+        {
+            get
+            {
+                lock (Semaphore)
+                {
+                    return _defaultRegionInfo;
+                }
+            }
+
+            set
+            {
+                lock (Semaphore)
+                {
+                    _defaultRegionInfo = value;
+                }
+            }
+        }
 
         /// <summary>Implements the operator ==.</summary>
         /// <param name="left">The left Currency.</param>
